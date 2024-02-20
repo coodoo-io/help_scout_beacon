@@ -1,0 +1,33 @@
+name: help_scout_beacon
+description: "A new Flutter plugin project."
+version: 0.0.1
+repository:
+issue_tracker:
+
+topics:
+  - help-scout
+  - help
+
+environment:
+  sdk: '>=3.3.0 <4.0.0'
+  flutter: '>=3.3.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  plugin_platform_interface: ^2.0.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+  pigeon: ^17.0.0
+
+flutter:
+  plugin:
+    platforms:
+      android:
+        package: de.coodoo.help_scout_beacon
+        pluginClass: HelpScoutBeaconPlugin
+      ios:
+        pluginClass: HelpScoutBeaconPlugin
