@@ -1,28 +1,16 @@
-import 'package:help_scout_beacon/help_scout_api.g.dart';
+
+import 'package:help_scout_beacon/help_scout_beacon_api.g.dart';
 
 class HelpScoutBeacon {
-  static final HelpScoutBeacon _singleton = HelpScoutBeacon._internal();
-  final HelpScoutApi _helpScoutApi = HelpScoutApi();
-
-  factory HelpScoutBeacon() {
-    return _singleton;
-  }
-  HelpScoutBeacon._internal();
-
-
-  Future<void> initialize({required String beaconId}) async {
-    await _helpScoutApi.initialize(beaconId);
+  static Future<void> identify({required HSBeaconUser beaconUser}) async {
+    await HelpScoutBeaconApi().identify(beaconUser: beaconUser);
   }
 
-  Future<void> open() async {
-    await _helpScoutApi.open();
+  static Future<void> open({required HSBeaconSettings settings, HSBeaconRoute route = HSBeaconRoute.ask, String? parameter}) async {
+    await HelpScoutBeaconApi().open(settings: settings, route: route, parameter: parameter);
   }
 
-  Future<void> logout() async {
-    await _helpScoutApi.logout();
-  }
-
-  Future<void> clear() async {
-    await _helpScoutApi.clear();
+  static Future<void> logout() async {
+    await HelpScoutBeaconApi().logout();
   }
 }

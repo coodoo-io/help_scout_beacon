@@ -1,6 +1,9 @@
 package de.coodoo.help_scout_beacon
 
-import HelpScoutApi
+import HelpScoutBeaconApi
+import HSBeaconUser
+import HSBeaconRoute
+import HSBeaconSettings
 import androidx.annotation.NonNull
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin
@@ -15,31 +18,39 @@ import com.helpscout.beacon.Beacon
 import com.helpscout.beacon.ui.BeaconActivity
 
 /** HelpScoutBeaconPlugin */
-class HelpScoutBeaconPlugin: FlutterPlugin, HelpScoutApi, ActivityAware {
+class HelpScoutBeaconPlugin: FlutterPlugin, HelpScoutBeaconApi, ActivityAware {
   private var currentActivity: android.app.Activity?=null;
 
   override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
-    HelpScoutApi.setUp(flutterPluginBinding.binaryMessenger, this)
+    HelpScoutBeaconApi.setUp(flutterPluginBinding.binaryMessenger, this)
   }
 
-  override fun initialize(beaconId: String) {
-    Beacon.Builder()
-      .withBeaconId(beaconId)
-      .withLogsEnabled(true)
-      .build()
+  //
+  // Implementation
+  //
+  /** Signs in with a Beacon user. This gives Beacon access to the user’s name, email address, and signature. */
+  override fun identify(beaconUser: HSBeaconUser) {
+    Beacon.identify(beaconUser.email, beaconUser.name, beaconUser.company, beaconUser.jobTitle, beaconUser.avatar)
   }
-  override fun open() {
+
+  /** Opens the Beacon SDK from a specific view controller. The Beacon view controller will be presented as a modal. */
+  override fun open(settings: HSBeaconSettings, route: HSBeaconRoute, parameter: String?) {
     if(currentActivity!=null) {
+      Beacon.Builder()
+      .withBeaconId(settings.beaconId)
+      .withLogsEnabled(true)
+      .build();
       BeaconActivity.open(currentActivity!!)
     }
   }
+  /** Logs the current Beacon user out and clears out their information from local storage. */
   override fun logout() {
     Beacon.logout()
   }
-  override fun clear() {
-    Beacon.clear()
-  }
-
+  
+  //
+  // Lifecycle and activity
+  //
   override fun onAttachedToActivity(binding: ActivityPluginBinding) {
     // Log.d("DART/NATIVE", "onAttachedToActivity")
     currentActivity = binding.activity
@@ -59,8 +70,9 @@ class HelpScoutBeaconPlugin: FlutterPlugin, HelpScoutApi, ActivityAware {
   override fun onDetachedFromActivity() {
     currentActivity = null
   }
+  // End
 
   override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {
-    HelpScoutApi.setUp(binding.binaryMessenger, null)
+    HelpScoutBeaconApi.setUp(binding.binaryMessenger, null)
   }
 }
