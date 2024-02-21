@@ -23,25 +23,28 @@ class MyApp extends StatelessWidget {
             children: [
               // Start a beacon ui
               ElevatedButton(
-                onPressed: () => HelpScoutBeacon.open(
-                    settings: HSBeaconSettings(beaconId: 'b3e675c8-77c1-4c80-92b6-c2b30ac71dcd')),
+                onPressed: () =>
+                    HelpScoutBeacon.open(settings: HSBeaconSettings(beaconId: '3a08bb62-4a31-4d40-8cae-31c084c16c89')),
                 child: const Text('Open Beacon-UI'),
               ),
 
-              const SizedBox(height: 16),
+              const SizedBox(height: 32),
 
               // Clear everything
-              OutlinedButton(
-                onPressed: () => HelpScoutBeacon.identify(beaconUser: HSBeaconUser(email: "john.doe@example.com")),
-                child: const Text('Identity User'),
-              ),
-
-              const SizedBox(height: 16),
-
-              // Logout
-              OutlinedButton(
-                onPressed: () => HelpScoutBeacon.logout(),
-                child: const Text('Logout'),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  OutlinedButton(
+                    onPressed: () => HelpScoutBeacon.identify(
+                        beaconUser: HSBeaconUser(email: "john.doe@example.com", name: "John Doe")),
+                    child: const Text('Set User'),
+                  ),
+                  const SizedBox(width: 16),
+                  OutlinedButton(
+                    onPressed: () => HelpScoutBeacon.logout(),
+                    child: const Text('Clear User'),
+                  ),
+                ],
               ),
             ],
           ),
