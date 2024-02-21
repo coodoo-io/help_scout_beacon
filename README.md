@@ -1,15 +1,33 @@
-# help_scout_beacon
+# Help Scout Beacon SDK for Flutter
 
-A new Flutter plugin project.
+## Requirements
 
-## Getting Started
+## Getting started
 
-This project is a starting point for a Flutter
-[plug-in package](https://flutter.dev/developing-packages/),
-a specialized package that includes platform-specific implementation code for
-Android and/or iOS.
+### Open Beacon-UI
 
-For help getting started with Flutter development, view the
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Configure the beacon with your `Beacon ID` and launch the beacon UI by calling `open`.
 
+```dart
+final settings = HSBeaconSettings(beaconId: 'YOUR_BEACON_ID');
+HelpScoutBeacon.open(settings: settings);
+```
+
+### Identify User
+
+Optionally you can prefill the beacon with user meta data:
+
+```dart
+final user = HSBeaconUser(email: "john.doe@example.com", name: "John Doe");
+HelpScoutBeacon.identify(beaconUser: user);
+
+HelpScoutBeacon.open(settings: HSBeaconSettings(beaconId: 'YOUR_BEACON_ID'));
+```
+
+### Logout / Cleanup
+
+Once done you can remove all data by logging out:
+
+```dart
+HelpScoutBeacon.logout()
+```

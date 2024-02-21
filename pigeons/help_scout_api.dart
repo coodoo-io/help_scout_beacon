@@ -1,25 +1,28 @@
 import 'package:pigeon/pigeon.dart';
 
-@ConfigurePigeon(PigeonOptions(
-  dartOut: 'lib/help_scout_beacon_api.g.dart',
-  dartTestOut: 'test/help_scout_beacon_test.g.dart',
-  kotlinOut: 'android/src/main/kotlin/de/coodoo/help_scout_beacon/HelpScoutBeaconApi.g.kt',
-  swiftOut: 'ios/Classes/HelpScoutBeaconApi.g.swift',
-  copyrightHeader: 'pigeons/copyright.txt',
-  dartPackageName: 'help_scout_beacon',
-))
+@ConfigurePigeon(
+  PigeonOptions(
+    dartOut: 'lib/help_scout_beacon_api.g.dart',
+    dartTestOut: 'test/help_scout_beacon_test.g.dart',
+    kotlinOut: 'android/src/main/kotlin/de/coodoo/help_scout_beacon/HelpScoutBeaconApi.g.kt',
+    swiftOut: 'ios/Classes/HelpScoutBeaconApi.g.swift',
+    copyrightHeader: 'pigeons/copyright.txt',
+    dartPackageName: 'help_scout_beacon',
+  ),
+)
 
 /// Beacon settings
 /// * https://developer.helpscout.com/beacon-2/android-api/beacon/com.helpscout.beacon.model/-beacon-screens/index.html
 /// * https://developer.helpscout.com/beacon-2/ios-api/Classes/HSBeaconSettings.html
 class HSBeaconSettings {
-  const HSBeaconSettings(
-      {required this.beaconId,
-      this.beaconTitle,
-      this.docsEnabled,
-      this.messagingEnabled,
-      this.chatEnabled,
-      this.enablePreviousMessages});
+  const HSBeaconSettings({
+    required this.beaconId,
+    this.beaconTitle,
+    this.docsEnabled,
+    this.messagingEnabled,
+    this.chatEnabled,
+    this.enablePreviousMessages,
+  });
 
   /// The Beacon ID to use.
   final String beaconId;
@@ -69,8 +72,7 @@ enum HSBeaconRoute {
 /// * https://developer.helpscout.com/beacon-2/android-api/beacon/com.helpscout.beacon.model/-beacon-user/index.html
 /// * https://developer.helpscout.com/beacon-2/ios-api/Classes/HSBeaconUser.html
 class HSBeaconUser {
-  const HSBeaconUser(
-      {required this.email, this.name, this.company, this.jobTitle, this.avatar, this.attributes});
+  const HSBeaconUser({required this.email, this.name, this.company, this.jobTitle, this.avatar, this.attributes});
 
   /// The email address for the current user.
   final String email;

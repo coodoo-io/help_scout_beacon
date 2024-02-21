@@ -8,8 +8,11 @@ class HelpScoutBeacon {
   }
 
   /// Opens the Beacon SDK from a specific view controller. The Beacon view controller will be presented as a modal.
-  static Future<void> open(
-      {required HSBeaconSettings settings, HSBeaconRoute route = HSBeaconRoute.ask, String? parameter}) async {
+  static Future<void> open({
+    required HSBeaconSettings settings,
+    HSBeaconRoute route = HSBeaconRoute.ask,
+    String? parameter,
+  }) async {
     await HelpScoutBeaconApi().open(settings: settings, route: route, parameter: parameter);
   }
 

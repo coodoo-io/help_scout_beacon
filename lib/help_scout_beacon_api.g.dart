@@ -30,14 +30,19 @@ List<Object?> wrapResponse({Object? result, PlatformException? error, bool empty
 enum HSBeaconRoute {
   /// Opens to the Home (Ask/Answers) screen (default value)
   ask,
+
   /// Chat screen
   chat,
+
   /// Search results screen (requires a search parameter and docs enabled)
   search,
+
   /// Article screen (requires an Article ID and docs enabled)
   article,
+
   /// Contact form (requires messaging enabled)
   contactForm,
+
   /// Previous Messages if any exist.
   previousMessages,
 }
@@ -173,9 +178,9 @@ class _HelpScoutBeaconApiCodec extends StandardMessageCodec {
   @override
   Object? readValueOfType(int type, ReadBuffer buffer) {
     switch (type) {
-      case 128: 
+      case 128:
         return HSBeaconSettings.decode(readValue(buffer)!);
-      case 129: 
+      case 129:
         return HSBeaconUser.decode(readValue(buffer)!);
       default:
         return super.readValueOfType(type, buffer);
@@ -188,8 +193,7 @@ class HelpScoutBeaconApi {
   /// Constructor for [HelpScoutBeaconApi].  The [binaryMessenger] named argument is
   /// available for dependency injection.  If it is left null, the default
   /// BinaryMessenger will be used which routes to the host platform.
-  HelpScoutBeaconApi({BinaryMessenger? binaryMessenger})
-      : __pigeon_binaryMessenger = binaryMessenger;
+  HelpScoutBeaconApi({BinaryMessenger? binaryMessenger}) : __pigeon_binaryMessenger = binaryMessenger;
   final BinaryMessenger? __pigeon_binaryMessenger;
 
   static const MessageCodec<Object?> pigeonChannelCodec = _HelpScoutBeaconApiCodec();
@@ -202,8 +206,7 @@ class HelpScoutBeaconApi {
       pigeonChannelCodec,
       binaryMessenger: __pigeon_binaryMessenger,
     );
-    final List<Object?>? __pigeon_replyList =
-        await __pigeon_channel.send(<Object?>[beaconUser]) as List<Object?>?;
+    final List<Object?>? __pigeon_replyList = await __pigeon_channel.send(<Object?>[beaconUser]) as List<Object?>?;
     if (__pigeon_replyList == null) {
       throw _createConnectionError(__pigeon_channelName);
     } else if (__pigeon_replyList.length > 1) {
@@ -218,7 +221,11 @@ class HelpScoutBeaconApi {
   }
 
   /// Opens the Beacon SDK from a specific view controller. The Beacon view controller will be presented as a modal.
-  Future<void> open({required HSBeaconSettings settings, HSBeaconRoute route = HSBeaconRoute.ask, String? parameter,}) async {
+  Future<void> open({
+    required HSBeaconSettings settings,
+    HSBeaconRoute route = HSBeaconRoute.ask,
+    String? parameter,
+  }) async {
     const String __pigeon_channelName = 'dev.flutter.pigeon.help_scout_beacon.HelpScoutBeaconApi.open';
     final BasicMessageChannel<Object?> __pigeon_channel = BasicMessageChannel<Object?>(
       __pigeon_channelName,
@@ -248,8 +255,7 @@ class HelpScoutBeaconApi {
       pigeonChannelCodec,
       binaryMessenger: __pigeon_binaryMessenger,
     );
-    final List<Object?>? __pigeon_replyList =
-        await __pigeon_channel.send(null) as List<Object?>?;
+    final List<Object?>? __pigeon_replyList = await __pigeon_channel.send(null) as List<Object?>?;
     if (__pigeon_replyList == null) {
       throw _createConnectionError(__pigeon_channelName);
     } else if (__pigeon_replyList.length > 1) {
