@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
               // Start a beacon ui
               ElevatedButton(
                 onPressed: () => HelpScoutBeacon.open(
-                    settings: HSBeaconSettings(beaconId: '3a08bb62-4a31-4d40-8cae-31c084c16c89')),
+                    settings: HSBeaconSettings(beaconId: 'b3e675c8-77c1-4c80-92b6-c2b30ac71dcd')),
                 child: const Text('Open Beacon-UI'),
               ),
 
