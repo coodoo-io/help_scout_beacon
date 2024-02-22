@@ -24,7 +24,22 @@ public class HelpScoutBeaconPlugin: NSObject, FlutterPlugin, HelpScoutBeaconApi 
   /// Opens the Beacon SDK from a specific view controller. The Beacon view controller will be presented as a modal.
   func open(settings: HSBeaconSettings, route: HSBeaconRoute, parameter: String?) -> Void {
     let settings = Beacon.HSBeaconSettings(beaconId: settings.beaconId)
-    Beacon.HSBeacon.open(settings)
+    switch route {
+      case .ask:
+        Beacon.HSBeacon.navigate(BeaconRoute.ask, settings: settings) // ask screen
+      case .chat:
+        Beacon.HSBeacon.navigate(BeaconRoute.askChat, settings: settings) // chat search
+      case .search:
+        Beacon.HSBeacon.navigate(BeaconRoute.search(parameter!), settings: settings) // equivalent to HSBeacon search
+      case .article:
+        Beacon.HSBeacon.navigate(BeaconRoute.article(parameter!), settings: settings) // equivalent to HSBeacon openArticle
+      case .contactForm:
+        Beacon.HSBeacon.navigate(BeaconRoute.askMessage, settings: settings) // contact-form screen
+      case .previousMessages:
+        Beacon.HSBeacon.navigate(BeaconRoute.previousMessages, settings: settings) // previous conversations screen
+      default:
+        Beacon.HSBeacon.navigate(BeaconRoute.home, settings: settings) // welcome screen
+      }
   }
 
   /// Logs the current Beacon user out and clears out their information from local storage.
