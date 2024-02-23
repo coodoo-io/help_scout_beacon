@@ -15,7 +15,9 @@ import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 
 import com.helpscout.beacon.Beacon
+import com.helpscout.beacon.model.BeaconScreens
 import com.helpscout.beacon.ui.BeaconActivity
+import java.util.ArrayList
 
 /** HelpScoutBeaconPlugin */
 class HelpScoutBeaconPlugin: FlutterPlugin, HelpScoutBeaconApi, ActivityAware {
@@ -36,11 +38,23 @@ class HelpScoutBeaconPlugin: FlutterPlugin, HelpScoutBeaconApi, ActivityAware {
   /** Opens the Beacon SDK from a specific view controller. The Beacon view controller will be presented as a modal. */
   override fun open(settings: HSBeaconSettings, route: HSBeaconRoute, parameter: String?) {
     if(currentActivity!=null) {
+      var parameters = ArrayList<String>();
+      if(parameter!=null) {
+        parameters.add(parameter);
+      }
       Beacon.Builder()
       .withBeaconId(settings.beaconId)
       .withLogsEnabled(true)
       .build();
-      BeaconActivity.open(currentActivity!!)
+      when (route) {
+        HSBeaconRoute.ASK -> BeaconActivity.open(currentActivity!!, BeaconScreens.ASK, parameters)
+        HSBeaconRoute.CHAT -> BeaconActivity.open(currentActivity!!, BeaconScreens.CHAT, parameters)
+        HSBeaconRoute.SEARCH -> BeaconActivity.open(currentActivity!!, BeaconScreens.SEARCH_SCREEN, parameters)
+        HSBeaconRoute.ARTICLE -> BeaconActivity.open(currentActivity!!, BeaconScreens.ARTICLE_SCREEN, parameters)
+        HSBeaconRoute.CONTACT_FORM -> BeaconActivity.open(currentActivity!!, BeaconScreens.CONTACT_FORM_SCREEN, parameters)
+        HSBeaconRoute.PREVIOUS_MESSAGES -> BeaconActivity.open(currentActivity!!, BeaconScreens.PREVIOUS_MESSAGES, parameters)
+        else -> BeaconActivity.open(currentActivity!!)
+      }
     }
   }
   /** Logs the current Beacon user out and clears out their information from local storage. */
