@@ -44,7 +44,6 @@ class HelpScoutBeaconPlugin: FlutterPlugin, HelpScoutBeaconApi, ActivityAware {
       }
       Beacon.Builder()
       .withBeaconId(settings.beaconId)
-      .withLogsEnabled(true)
       .build();
       when (route) {
         HSBeaconRoute.ASK -> BeaconActivity.open(currentActivity!!, BeaconScreens.ASK, parameters)

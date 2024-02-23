@@ -28,11 +28,11 @@ public class HelpScoutBeaconPlugin: NSObject, FlutterPlugin, HelpScoutBeaconApi 
       case .ask:
         Beacon.HSBeacon.navigate(BeaconRoute.ask, settings: settings) // ask screen
       case .chat:
-        Beacon.HSBeacon.navigate(BeaconRoute.askChat, settings: settings) // chat search
+        Beacon.HSBeacon.navigate(BeaconRoute.askChat, settings: settings) // chat
       case .search:
-        Beacon.HSBeacon.navigate(BeaconRoute.search(parameter!), settings: settings) // equivalent to HSBeacon search
+        Beacon.HSBeacon.navigate(BeaconRoute.search(parameter ?? ""), settings: settings) // Search in docs
       case .article:
-        Beacon.HSBeacon.navigate(BeaconRoute.article(parameter!), settings: settings) // equivalent to HSBeacon openArticle
+        Beacon.HSBeacon.navigate(BeaconRoute.article(parameter ?? ""), settings: settings) // Open an article
       case .contactForm:
         Beacon.HSBeacon.navigate(BeaconRoute.askMessage, settings: settings) // contact-form screen
       case .previousMessages:
