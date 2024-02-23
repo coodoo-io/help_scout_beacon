@@ -1,1 +1,17 @@
 include: package:flutter_lints/flutter.yaml
+
+linter:
+  rules:
+    prefer_single_quotes: true
+    require_trailing_commas: true
+    always_use_package_imports: true
+
+analyzer:
+  exclude:
+    - "**/*.g.dart"
+    - "build/**"
+    - "android/**"
+  errors:
+    todo: ignore
+    missing_return: error
+    invalid_annotation_target: ignore

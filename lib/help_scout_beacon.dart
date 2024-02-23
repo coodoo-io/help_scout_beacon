@@ -1,28 +1,23 @@
-import 'package:help_scout_beacon/help_scout_api.g.dart';
+import 'package:help_scout_beacon/help_scout_beacon_api.g.dart';
 
+/// Flutter plugin to talk to the Help Scout iOS/Android Beacon SDK
 class HelpScoutBeacon {
-  static final HelpScoutBeacon _singleton = HelpScoutBeacon._internal();
-  final HelpScoutApi _helpScoutApi = HelpScoutApi();
-
-  factory HelpScoutBeacon() {
-    return _singleton;
-  }
-  HelpScoutBeacon._internal();
-
-
-  Future<void> initialize({required String beaconId}) async {
-    await _helpScoutApi.initialize(beaconId);
+  /// Signs in with a Beacon user. This gives Beacon access to the user’s name, email address, and signature.
+  Future<void> identify({required HSBeaconUser beaconUser}) async {
+    await HelpScoutBeaconApi().identify(beaconUser: beaconUser);
   }
 
-  Future<void> open() async {
-    await _helpScoutApi.open();
+  /// Opens the Beacon SDK from a specific view controller. The Beacon view controller will be presented as a modal.
+  Future<void> open({
+    required HSBeaconSettings settings,
+    HSBeaconRoute route = HSBeaconRoute.ask,
+    String? parameter,
+  }) async {
+    await HelpScoutBeaconApi().open(settings: settings, route: route, parameter: parameter);
   }
 
-  Future<void> logout() async {
-    await _helpScoutApi.logout();
-  }
-
+  /// Logs the current Beacon user out and clears out their information from local storage.
   Future<void> clear() async {
-    await _helpScoutApi.clear();
+    await HelpScoutBeaconApi().clear();
   }
 }

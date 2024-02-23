@@ -1,8 +1,8 @@
 name: help_scout_beacon
-description: "A new Flutter plugin project."
-version: 0.0.1
-repository:
-issue_tracker:
+description: "Streamline customer communications in your Flutter app with the Help Scout SDK, effortlessly managing inquiries, tickets, and real-time chats to deliver exceptional support experiences."
+version: 0.0.1-dev.1
+repository: https://github.com/coodoo-io/help_scout_beacon
+issue_tracker: https://github.com/coodoo-io/help_scout_beacon/issues
 
 topics:
   - help-scout
