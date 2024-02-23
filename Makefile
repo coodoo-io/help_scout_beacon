@@ -9,7 +9,7 @@ clean:
 
 # Format & Lint
 format:
-	dart format . --line-length 120
+	dart format .
 lint:
 	dart analyze
 

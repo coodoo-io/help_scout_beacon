@@ -13,7 +13,8 @@ class HelpScoutBeacon {
     HSBeaconRoute route = HSBeaconRoute.ask,
     String? parameter,
   }) async {
-    await HelpScoutBeaconApi().open(settings: settings, route: route, parameter: parameter);
+    await HelpScoutBeaconApi()
+        .open(settings: settings, route: route, parameter: parameter);
   }
 
   /// Logs the current Beacon user out and clears out their information from local storage.

@@ -15,7 +15,8 @@ PlatformException _createConnectionError(String channelName) {
   );
 }
 
-List<Object?> wrapResponse({Object? result, PlatformException? error, bool empty = false}) {
+List<Object?> wrapResponse(
+    {Object? result, PlatformException? error, bool empty = false}) {
   if (empty) {
     return <Object?>[];
   }
@@ -193,20 +194,25 @@ class HelpScoutBeaconApi {
   /// Constructor for [HelpScoutBeaconApi].  The [binaryMessenger] named argument is
   /// available for dependency injection.  If it is left null, the default
   /// BinaryMessenger will be used which routes to the host platform.
-  HelpScoutBeaconApi({BinaryMessenger? binaryMessenger}) : __pigeon_binaryMessenger = binaryMessenger;
+  HelpScoutBeaconApi({BinaryMessenger? binaryMessenger})
+      : __pigeon_binaryMessenger = binaryMessenger;
   final BinaryMessenger? __pigeon_binaryMessenger;
 
-  static const MessageCodec<Object?> pigeonChannelCodec = _HelpScoutBeaconApiCodec();
+  static const MessageCodec<Object?> pigeonChannelCodec =
+      _HelpScoutBeaconApiCodec();
 
   /// Signs in with a Beacon user. This gives Beacon access to the user’s name, email address, and signature.
   Future<void> identify({required HSBeaconUser beaconUser}) async {
-    const String __pigeon_channelName = 'dev.flutter.pigeon.help_scout_beacon.HelpScoutBeaconApi.identify';
-    final BasicMessageChannel<Object?> __pigeon_channel = BasicMessageChannel<Object?>(
+    const String __pigeon_channelName =
+        'dev.flutter.pigeon.help_scout_beacon.HelpScoutBeaconApi.identify';
+    final BasicMessageChannel<Object?> __pigeon_channel =
+        BasicMessageChannel<Object?>(
       __pigeon_channelName,
       pigeonChannelCodec,
       binaryMessenger: __pigeon_binaryMessenger,
     );
-    final List<Object?>? __pigeon_replyList = await __pigeon_channel.send(<Object?>[beaconUser]) as List<Object?>?;
+    final List<Object?>? __pigeon_replyList =
+        await __pigeon_channel.send(<Object?>[beaconUser]) as List<Object?>?;
     if (__pigeon_replyList == null) {
       throw _createConnectionError(__pigeon_channelName);
     } else if (__pigeon_replyList.length > 1) {
@@ -226,14 +232,16 @@ class HelpScoutBeaconApi {
     HSBeaconRoute route = HSBeaconRoute.ask,
     String? parameter,
   }) async {
-    const String __pigeon_channelName = 'dev.flutter.pigeon.help_scout_beacon.HelpScoutBeaconApi.open';
-    final BasicMessageChannel<Object?> __pigeon_channel = BasicMessageChannel<Object?>(
+    const String __pigeon_channelName =
+        'dev.flutter.pigeon.help_scout_beacon.HelpScoutBeaconApi.open';
+    final BasicMessageChannel<Object?> __pigeon_channel =
+        BasicMessageChannel<Object?>(
       __pigeon_channelName,
       pigeonChannelCodec,
       binaryMessenger: __pigeon_binaryMessenger,
     );
-    final List<Object?>? __pigeon_replyList =
-        await __pigeon_channel.send(<Object?>[settings, route.index, parameter]) as List<Object?>?;
+    final List<Object?>? __pigeon_replyList = await __pigeon_channel
+        .send(<Object?>[settings, route.index, parameter]) as List<Object?>?;
     if (__pigeon_replyList == null) {
       throw _createConnectionError(__pigeon_channelName);
     } else if (__pigeon_replyList.length > 1) {
@@ -249,13 +257,16 @@ class HelpScoutBeaconApi {
 
   /// Logs the current Beacon user out and clears out their information from local storage.
   Future<void> clear() async {
-    const String __pigeon_channelName = 'dev.flutter.pigeon.help_scout_beacon.HelpScoutBeaconApi.clear';
-    final BasicMessageChannel<Object?> __pigeon_channel = BasicMessageChannel<Object?>(
+    const String __pigeon_channelName =
+        'dev.flutter.pigeon.help_scout_beacon.HelpScoutBeaconApi.clear';
+    final BasicMessageChannel<Object?> __pigeon_channel =
+        BasicMessageChannel<Object?>(
       __pigeon_channelName,
       pigeonChannelCodec,
       binaryMessenger: __pigeon_binaryMessenger,
     );
-    final List<Object?>? __pigeon_replyList = await __pigeon_channel.send(null) as List<Object?>?;
+    final List<Object?>? __pigeon_replyList =
+        await __pigeon_channel.send(null) as List<Object?>?;
     if (__pigeon_replyList == null) {
       throw _createConnectionError(__pigeon_channelName);
     } else if (__pigeon_replyList.length > 1) {

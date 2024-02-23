@@ -4,7 +4,8 @@ import 'package:pigeon/pigeon.dart';
   PigeonOptions(
     dartOut: 'lib/help_scout_beacon_api.g.dart',
     dartTestOut: 'test/help_scout_beacon_test.g.dart',
-    kotlinOut: 'android/src/main/kotlin/de/coodoo/help_scout_beacon/HelpScoutBeaconApi.g.kt',
+    kotlinOut:
+        'android/src/main/kotlin/de/coodoo/help_scout_beacon/HelpScoutBeaconApi.g.kt',
     swiftOut: 'ios/Classes/HelpScoutBeaconApi.g.swift',
     copyrightHeader: 'pigeons/copyright.txt',
     dartPackageName: 'help_scout_beacon',
@@ -72,7 +73,14 @@ enum HSBeaconRoute {
 /// * https://developer.helpscout.com/beacon-2/android-api/beacon/com.helpscout.beacon.model/-beacon-user/index.html
 /// * https://developer.helpscout.com/beacon-2/ios-api/Classes/HSBeaconUser.html
 class HSBeaconUser {
-  const HSBeaconUser({required this.email, this.name, this.company, this.jobTitle, this.avatar, this.attributes});
+  const HSBeaconUser({
+    required this.email,
+    this.name,
+    this.company,
+    this.jobTitle,
+    this.avatar,
+    this.attributes,
+  });
 
   /// The email address for the current user.
   final String email;
@@ -100,7 +108,11 @@ abstract class HelpScoutBeaconApi {
   void identify({required HSBeaconUser beaconUser});
 
   /// Opens the Beacon SDK from a specific view controller. The Beacon view controller will be presented as a modal.
-  void open({required HSBeaconSettings settings, HSBeaconRoute route = HSBeaconRoute.ask, String? parameter});
+  void open({
+    required HSBeaconSettings settings,
+    HSBeaconRoute route = HSBeaconRoute.ask,
+    String? parameter,
+  });
 
   /// Logs the current Beacon user out and clears out their information from local storage.
   void clear();

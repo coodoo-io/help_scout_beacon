@@ -37,10 +37,12 @@ class _MyAppState extends State<MyApp> {
                   child: TextFormField(
                     onChanged: (value) => setState(() => _beaconId = value),
                     decoration: const InputDecoration(
-                      border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(16))),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(16))),
                       labelText: 'Beacon ID',
                       hintText: 'Enter your beacon ID',
-                      contentPadding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                      contentPadding:
+                          EdgeInsets.symmetric(horizontal: 24, vertical: 16),
                       filled: true,
                     ),
                     validator: (value) {
@@ -56,27 +58,36 @@ class _MyAppState extends State<MyApp> {
 
               // Start a beacon ui
               ElevatedButton(
-                onPressed: isFormValid() ? () => _beacon.open(settings: HSBeaconSettings(beaconId: _beaconId)) : null,
+                onPressed: isFormValid()
+                    ? () => _beacon.open(
+                        settings: HSBeaconSettings(beaconId: _beaconId))
+                    : null,
                 child: const Text('Open (Default)'),
               ),
               const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: isFormValid()
-                    ? () => _beacon.open(settings: HSBeaconSettings(beaconId: _beaconId), route: HSBeaconRoute.ask)
+                    ? () => _beacon.open(
+                        settings: HSBeaconSettings(beaconId: _beaconId),
+                        route: HSBeaconRoute.ask)
                     : null,
                 child: const Text('Open Ask'),
               ),
               const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: isFormValid()
-                    ? () => _beacon.open(settings: HSBeaconSettings(beaconId: _beaconId), route: HSBeaconRoute.chat)
+                    ? () => _beacon.open(
+                        settings: HSBeaconSettings(beaconId: _beaconId),
+                        route: HSBeaconRoute.chat)
                     : null,
                 child: const Text('Open Chat'),
               ),
               const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: isFormValid()
-                    ? () => _beacon.open(settings: HSBeaconSettings(beaconId: _beaconId), route: HSBeaconRoute.docs)
+                    ? () => _beacon.open(
+                        settings: HSBeaconSettings(beaconId: _beaconId),
+                        route: HSBeaconRoute.docs)
                     : null,
                 child: const Text('Open Docs'),
               ),
@@ -84,15 +95,18 @@ class _MyAppState extends State<MyApp> {
               ElevatedButton(
                 onPressed: isFormValid()
                     ? () => _beacon.open(
-                        settings: HSBeaconSettings(beaconId: _beaconId), route: HSBeaconRoute.docs, parameter: 'Help')
+                        settings: HSBeaconSettings(beaconId: _beaconId),
+                        route: HSBeaconRoute.docs,
+                        parameter: 'Help')
                     : null,
                 child: const Text('Open Docs (+search term)'),
               ),
               const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: isFormValid()
-                    ? () =>
-                        _beacon.open(settings: HSBeaconSettings(beaconId: _beaconId), route: HSBeaconRoute.contactForm)
+                    ? () => _beacon.open(
+                        settings: HSBeaconSettings(beaconId: _beaconId),
+                        route: HSBeaconRoute.contactForm)
                     : null,
                 child: const Text('Open Contact Form'),
               ),
@@ -100,7 +114,8 @@ class _MyAppState extends State<MyApp> {
               ElevatedButton(
                 onPressed: isFormValid()
                     ? () => _beacon.open(
-                        settings: HSBeaconSettings(beaconId: _beaconId), route: HSBeaconRoute.previousMessages)
+                        settings: HSBeaconSettings(beaconId: _beaconId),
+                        route: HSBeaconRoute.previousMessages)
                     : null,
                 child: const Text('Open Previous Messages'),
               ),
@@ -112,8 +127,10 @@ class _MyAppState extends State<MyApp> {
                 children: [
                   FilledButton(
                     onPressed: isFormValid()
-                        ? () =>
-                            _beacon.identify(beaconUser: HSBeaconUser(email: "john.doe@example.com", name: "John Doe"))
+                        ? () => _beacon.identify(
+                            beaconUser: HSBeaconUser(
+                                email: "john.doe@example.com",
+                                name: "John Doe"))
                         : null,
                     child: const Text('Set User'),
                   ),
