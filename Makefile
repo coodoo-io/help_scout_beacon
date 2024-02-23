@@ -20,5 +20,6 @@ generate:
 # Release to pub.dev
 release-check:
 	dart pub publish --dry-run
+	pana .
 release:
 	dart pub publish

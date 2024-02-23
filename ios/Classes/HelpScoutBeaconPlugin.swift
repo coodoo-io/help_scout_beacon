@@ -30,7 +30,7 @@ public class HelpScoutBeaconPlugin: NSObject, FlutterPlugin, HelpScoutBeaconApi 
       case .chat:
         Beacon.HSBeacon.navigate(BeaconRoute.askChat, settings: settings) // chat
       case .docs:
-        if(parameter==nil || parameter == "") {
+        if(parameter==nil || parameter == "") {
           Beacon.HSBeacon.navigate(BeaconRoute.answers,settings: settings) // Open docs
         } else {
           Beacon.HSBeacon.navigate(BeaconRoute.search(parameter!), settings: settings) // Open docs with search query
