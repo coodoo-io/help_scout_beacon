@@ -1,10 +1,6 @@
 # Help Scout Beacon SDK for Flutter
 
-## Requirements
-
 ## Getting started
-
-### Open Beacon-UI
 
 Configure the beacon with your `Beacon ID` and launch the beacon UI by calling `open`.
 
