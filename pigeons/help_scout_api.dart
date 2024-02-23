@@ -55,8 +55,8 @@ enum HSBeaconRoute {
   /// Chat screen
   chat,
 
-  /// Search results screen (requires a search parameter and docs enabled)
-  search,
+  /// Open docs with optional search paramter (requires docs enabled and optional search parameter)
+  docs,
 
   /// Article screen (requires an Article ID and docs enabled)
   article,
@@ -103,5 +103,5 @@ abstract class HelpScoutBeaconApi {
   void open({required HSBeaconSettings settings, HSBeaconRoute route = HSBeaconRoute.ask, String? parameter});
 
   /// Logs the current Beacon user out and clears out their information from local storage.
-  void logout();
+  void clear();
 }

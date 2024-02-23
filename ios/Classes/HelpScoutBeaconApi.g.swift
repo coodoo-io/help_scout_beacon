@@ -46,8 +46,8 @@ enum HSBeaconRoute: Int {
   case ask = 0
   /// Chat screen
   case chat = 1
-  /// Search results screen (requires a search parameter and docs enabled)
-  case search = 2
+  /// Open docs with optional search paramter (requires docs enabled and optional search parameter)
+  case docs = 2
   /// Article screen (requires an Article ID and docs enabled)
   case article = 3
   /// Contact form (requires messaging enabled)
@@ -204,7 +204,7 @@ protocol HelpScoutBeaconApi {
   /// Opens the Beacon SDK from a specific view controller. The Beacon view controller will be presented as a modal.
   func open(settings: HSBeaconSettings, route: HSBeaconRoute, parameter: String?) throws
   /// Logs the current Beacon user out and clears out their information from local storage.
-  func logout() throws
+  func clear() throws
 }
 
 /// Generated setup class from Pigeon to handle messages through the `binaryMessenger`.
@@ -248,18 +248,18 @@ class HelpScoutBeaconApiSetup {
       openChannel.setMessageHandler(nil)
     }
     /// Logs the current Beacon user out and clears out their information from local storage.
-    let logoutChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.help_scout_beacon.HelpScoutBeaconApi.logout", binaryMessenger: binaryMessenger, codec: codec)
+    let clearChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.help_scout_beacon.HelpScoutBeaconApi.clear", binaryMessenger: binaryMessenger, codec: codec)
     if let api = api {
-      logoutChannel.setMessageHandler { _, reply in
+      clearChannel.setMessageHandler { _, reply in
         do {
-          try api.logout()
+          try api.clear()
           reply(wrapResult(nil))
         } catch {
           reply(wrapError(error))
         }
       }
     } else {
-      logoutChannel.setMessageHandler(nil)
+      clearChannel.setMessageHandler(nil)
     }
   }
 }

@@ -51,8 +51,8 @@ enum class HSBeaconRoute(val raw: Int) {
   ASK(0),
   /** Chat screen */
   CHAT(1),
-  /** Search results screen (requires a search parameter and docs enabled) */
-  SEARCH(2),
+  /** Open docs with optional search paramter (requires docs enabled and optional search parameter) */
+  DOCS(2),
   /** Article screen (requires an Article ID and docs enabled) */
   ARTICLE(3),
   /** Contact form (requires messaging enabled) */
@@ -210,7 +210,7 @@ interface HelpScoutBeaconApi {
   /** Opens the Beacon SDK from a specific view controller. The Beacon view controller will be presented as a modal. */
   fun open(settings: HSBeaconSettings, route: HSBeaconRoute, parameter: String?)
   /** Logs the current Beacon user out and clears out their information from local storage. */
-  fun logout()
+  fun clear()
 
   companion object {
     /** The codec used by HelpScoutBeaconApi. */
@@ -261,12 +261,12 @@ interface HelpScoutBeaconApi {
         }
       }
       run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.help_scout_beacon.HelpScoutBeaconApi.logout", codec)
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.help_scout_beacon.HelpScoutBeaconApi.clear", codec)
         if (api != null) {
           channel.setMessageHandler { _, reply ->
             var wrapped: List<Any?>
             try {
-              api.logout()
+              api.clear()
               wrapped = listOf<Any?>(null)
             } catch (exception: Throwable) {
               wrapped = wrapError(exception)

@@ -17,7 +17,7 @@ class HelpScoutBeacon {
   }
 
   /// Logs the current Beacon user out and clears out their information from local storage.
-  Future<void> logout() async {
-    await HelpScoutBeaconApi().logout();
+  Future<void> clear() async {
+    await HelpScoutBeaconApi().clear();
   }
 }

@@ -56,6 +56,11 @@ class _MyAppState extends State<MyApp> {
 
               // Start a beacon ui
               ElevatedButton(
+                onPressed: isFormValid() ? () => _beacon.open(settings: HSBeaconSettings(beaconId: _beaconId)) : null,
+                child: const Text('Open (Default)'),
+              ),
+              const SizedBox(height: 16),
+              ElevatedButton(
                 onPressed: isFormValid()
                     ? () => _beacon.open(settings: HSBeaconSettings(beaconId: _beaconId), route: HSBeaconRoute.ask)
                     : null,
@@ -71,8 +76,7 @@ class _MyAppState extends State<MyApp> {
               const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: isFormValid()
-                    ? () => _beacon.open(
-                        settings: HSBeaconSettings(beaconId: _beaconId), route: HSBeaconRoute.search)
+                    ? () => _beacon.open(settings: HSBeaconSettings(beaconId: _beaconId), route: HSBeaconRoute.docs)
                     : null,
                 child: const Text('Open Docs'),
               ),
@@ -80,15 +84,15 @@ class _MyAppState extends State<MyApp> {
               ElevatedButton(
                 onPressed: isFormValid()
                     ? () => _beacon.open(
-                        settings: HSBeaconSettings(beaconId: _beaconId), route: HSBeaconRoute.search, parameter: 'Help')
+                        settings: HSBeaconSettings(beaconId: _beaconId), route: HSBeaconRoute.docs, parameter: 'Help')
                     : null,
-                child: const Text('Open Search'),
+                child: const Text('Open Docs (+search term)'),
               ),
               const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: isFormValid()
-                    ? () => _beacon.open(
-                        settings: HSBeaconSettings(beaconId: _beaconId), route: HSBeaconRoute.contactForm)
+                    ? () =>
+                        _beacon.open(settings: HSBeaconSettings(beaconId: _beaconId), route: HSBeaconRoute.contactForm)
                     : null,
                 child: const Text('Open Contact Form'),
               ),
@@ -106,7 +110,7 @@ class _MyAppState extends State<MyApp> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  OutlinedButton(
+                  FilledButton(
                     onPressed: isFormValid()
                         ? () =>
                             _beacon.identify(beaconUser: HSBeaconUser(email: "john.doe@example.com", name: "John Doe"))
@@ -114,9 +118,9 @@ class _MyAppState extends State<MyApp> {
                     child: const Text('Set User'),
                   ),
                   const SizedBox(width: 16),
-                  OutlinedButton(
-                    onPressed: isFormValid() ? () => _beacon.logout() : null,
-                    child: const Text('Clear User'),
+                  FilledButton(
+                    onPressed: isFormValid() ? () => _beacon.clear() : null,
+                    child: const Text('Clear'),
                   ),
                 ],
               ),

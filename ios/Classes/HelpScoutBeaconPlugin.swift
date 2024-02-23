@@ -29,8 +29,12 @@ public class HelpScoutBeaconPlugin: NSObject, FlutterPlugin, HelpScoutBeaconApi 
         Beacon.HSBeacon.navigate(BeaconRoute.ask, settings: settings) // ask screen
       case .chat:
         Beacon.HSBeacon.navigate(BeaconRoute.askChat, settings: settings) // chat
-      case .search:
-        Beacon.HSBeacon.navigate(BeaconRoute.search(parameter ?? ""), settings: settings) // Search in docs
+      case .docs:
+        if(parameter==nil || parameter == "") {
+          Beacon.HSBeacon.navigate(BeaconRoute.answers,settings: settings) // Open docs
+        } else {
+          Beacon.HSBeacon.navigate(BeaconRoute.search(parameter!), settings: settings) // Open docs with search query
+        }
       case .article:
         Beacon.HSBeacon.navigate(BeaconRoute.article(parameter ?? ""), settings: settings) // Open an article
       case .contactForm:
@@ -38,12 +42,12 @@ public class HelpScoutBeaconPlugin: NSObject, FlutterPlugin, HelpScoutBeaconApi 
       case .previousMessages:
         Beacon.HSBeacon.navigate(BeaconRoute.previousMessages, settings: settings) // previous conversations screen
       default:
-        Beacon.HSBeacon.navigate(BeaconRoute.home, settings: settings) // welcome screen
+        Beacon.HSBeacon.open(settings)
       }
   }
 
   /// Logs the current Beacon user out and clears out their information from local storage.
-  func logout() -> Void {
+  func clear() -> Void {
     Beacon.HSBeacon.logout()
   }
 }
