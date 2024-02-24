@@ -51,7 +51,7 @@ enum class HSBeaconRoute(val raw: Int) {
   ASK(0),
   /** Chat screen */
   CHAT(1),
-  /** Open docs with optional search paramter (requires docs enabled and optional search parameter) */
+  /** Open docs with optional search parameter (requires docs enabled and optionally a search param) */
   DOCS(2),
   /** Article screen (requires an Article ID and docs enabled) */
   ARTICLE(3),
@@ -68,7 +68,26 @@ enum class HSBeaconRoute(val raw: Int) {
 }
 
 /**
- * Beacon settings
+ * HSBeaconFocusMode represents various configuration modes of Beacon. Allowing you to customize the experience your users have, from getting in contact right away, to a more self service approach.
+ * * More info is available AT https://docs.helpscout.com/article/1296-work-with-beacon-modes
+ */
+enum class HSBeaconFocusMode(val raw: Int) {
+  /** An option to see both help articles and contact options side by side */
+  NEUTRAL(0),
+  /** An option to see help articles first and contact options after interacting with content */
+  SELF_SERVICE(1),
+  /** An option to see contact options first and help articles second */
+  ASK_FIRST(2);
+
+  companion object {
+    fun ofRaw(raw: Int): HSBeaconFocusMode? {
+      return values().firstOrNull { it.raw == raw }
+    }
+  }
+}
+
+/**
+ * Beacon Settings overrides
  * * https://developer.helpscout.com/beacon-2/android-api/beacon/com.helpscout.beacon.model/-beacon-screens/index.html
  * * https://developer.helpscout.com/beacon-2/ios-api/Classes/HSBeaconSettings.html
  *
@@ -95,7 +114,9 @@ data class HSBeaconSettings (
    */
   val chatEnabled: Boolean? = null,
   /** Disable previous messages manually if messaging is enabled in the Beacon config. */
-  val enablePreviousMessages: Boolean? = null
+  val enablePreviousMessages: Boolean,
+  /** If your Beacon has Docs and Messaging (email or chat) enabled, this mode controls the user experience of the beacon */
+  val focusMode: HSBeaconFocusMode? = null
 
 ) {
   companion object {
@@ -106,8 +127,11 @@ data class HSBeaconSettings (
       val docsEnabled = list[2] as Boolean?
       val messagingEnabled = list[3] as Boolean?
       val chatEnabled = list[4] as Boolean?
-      val enablePreviousMessages = list[5] as Boolean?
-      return HSBeaconSettings(beaconId, beaconTitle, docsEnabled, messagingEnabled, chatEnabled, enablePreviousMessages)
+      val enablePreviousMessages = list[5] as Boolean
+      val focusMode: HSBeaconFocusMode? = (list[6] as Int?)?.let {
+        HSBeaconFocusMode.ofRaw(it)
+      }
+      return HSBeaconSettings(beaconId, beaconTitle, docsEnabled, messagingEnabled, chatEnabled, enablePreviousMessages, focusMode)
     }
   }
   fun toList(): List<Any?> {
@@ -118,6 +142,7 @@ data class HSBeaconSettings (
       messagingEnabled,
       chatEnabled,
       enablePreviousMessages,
+      focusMode?.raw,
     )
   }
 }

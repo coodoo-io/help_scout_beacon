@@ -54,7 +54,7 @@ class _MyAppState extends State<MyApp> {
                   ),
                 ),
               ),
-              const SizedBox(height: 40),
+              const SizedBox(height: 24),
 
               // Start a beacon ui
               ElevatedButton(

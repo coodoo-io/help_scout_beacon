@@ -5,7 +5,9 @@ import HSBeaconSettings
 import HSBeaconUser
 import HelpScoutBeaconApi
 import com.helpscout.beacon.Beacon
+import com.helpscout.beacon.model.BeaconConfigOverrides
 import com.helpscout.beacon.model.BeaconScreens
+import com.helpscout.beacon.model.FocusMode
 import com.helpscout.beacon.ui.BeaconActivity
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
@@ -49,6 +51,20 @@ class HelpScoutBeaconPlugin : FlutterPlugin, HelpScoutBeaconApi, ActivityAware {
         parameters.add(parameter)
       }
       Beacon.Builder().withBeaconId(settings.beaconId).build()
+
+      val focusMode: FocusMode? = when(settings.focusMode) {
+        HSBeaconFocusMode.NEUTRAL -> FocusMode.NEUTRAL
+        HSBeaconFocusMode.SELF_SERVICE -> FocusMode.SELF_SERVICE
+        HSBeaconFocusMode.ASK_FIRST -> FocusMode.ASK_FIRST
+        else -> null
+      }
+
+
+      // Settings
+      var configOverrides = BeaconConfigOverrides(settings.docsEnabled, settings.messagingEnabled, settings.chatEnabled,null,null, focusMode, settings.enablePreviousMessages);
+      Beacon.setConfigOverrides(configOverrides);
+
+      // Navigation
       when (route) {
         HSBeaconRoute.ASK -> BeaconActivity.open(currentActivity!!, BeaconScreens.ASK, parameters)
         HSBeaconRoute.CHAT -> BeaconActivity.open(currentActivity!!, BeaconScreens.CHAT, parameters)

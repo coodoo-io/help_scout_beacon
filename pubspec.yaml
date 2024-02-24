@@ -1,26 +1,27 @@
 name: help_scout_beacon
-description: "Streamline customer communications in your Flutter app with the Help Scout SDK, effortlessly managing inquiries, tickets, and real-time chats to deliver exceptional support experiences."
-version: 0.0.1-dev.1
+description: "Streamline customer communications in your app with the Help Scout Beacon SDK for Flutter."
+version: 0.0.1-dev.2
 repository: https://github.com/coodoo-io/help_scout_beacon
 issue_tracker: https://github.com/coodoo-io/help_scout_beacon/issues
 
 topics:
-  - help-scout
+  - customer
+  - helpdesk
+  - support
   - help
 
 environment:
   sdk: '>=3.3.0 <4.0.0'
-  flutter: '>=3.3.0'
 
 dependencies:
   flutter:
     sdk: flutter
-  plugin_platform_interface: ^2.0.2
+  plugin_platform_interface: ^2.1.8
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^3.0.0
+  flutter_lints: ^3.0.1
   pigeon: ^17.0.0
 
 flutter:
