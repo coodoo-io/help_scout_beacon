@@ -23,7 +23,27 @@ public class HelpScoutBeaconPlugin: NSObject, FlutterPlugin, HelpScoutBeaconApi 
 
   /// Opens the Beacon SDK from a specific view controller. The Beacon view controller will be presented as a modal.
   func open(settings: HSBeaconSettings, route: HSBeaconRoute, parameter: String?) -> Void {
+    var fMode : Beacon.HSBeaconFocusMode? = switch settings.focusMode {
+        case .neutral:
+          Beacon.HSBeaconFocusMode.neutral
+        case .selfService:
+          Beacon.HSBeaconFocusMode.selfService
+        case .askFirst:
+          Beacon.HSBeaconFocusMode.askFirst
+        default:
+          nil
+      }
+
     let settings = Beacon.HSBeaconSettings(beaconId: settings.beaconId)
+    settings.beaconTitle = settings.beaconTitle;
+    settings.docsEnabled = settings.docsEnabled;
+    settings.messagingEnabled = settings.messagingEnabled;
+    settings.chatEnabled = settings.chatEnabled;
+    settings.enablePreviousMessages = settings.enablePreviousMessages;
+    if(fMode != nil) {
+      settings.focusModeOverride = fMode!;
+    }
+      
     switch route {
       case .ask:
         Beacon.HSBeacon.navigate(BeaconRoute.ask, settings: settings) // ask screen

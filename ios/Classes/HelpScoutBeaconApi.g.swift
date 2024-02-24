@@ -46,7 +46,7 @@ enum HSBeaconRoute: Int {
   case ask = 0
   /// Chat screen
   case chat = 1
-  /// Open docs with optional search paramter (requires docs enabled and optional search parameter)
+  /// Open docs with optional search parameter (requires docs enabled and optionally a search param)
   case docs = 2
   /// Article screen (requires an Article ID and docs enabled)
   case article = 3
@@ -56,7 +56,18 @@ enum HSBeaconRoute: Int {
   case previousMessages = 5
 }
 
-/// Beacon settings
+/// HSBeaconFocusMode represents various configuration modes of Beacon. Allowing you to customize the experience your users have, from getting in contact right away, to a more self service approach.
+/// * More info is available AT https://docs.helpscout.com/article/1296-work-with-beacon-modes
+enum HSBeaconFocusMode: Int {
+  /// An option to see both help articles and contact options side by side
+  case neutral = 0
+  /// An option to see help articles first and contact options after interacting with content
+  case selfService = 1
+  /// An option to see contact options first and help articles second
+  case askFirst = 2
+}
+
+/// Beacon Settings overrides
 /// * https://developer.helpscout.com/beacon-2/android-api/beacon/com.helpscout.beacon.model/-beacon-screens/index.html
 /// * https://developer.helpscout.com/beacon-2/ios-api/Classes/HSBeaconSettings.html
 ///
@@ -76,7 +87,9 @@ struct HSBeaconSettings {
   /// This will not enable Chat if it’s disabled in the config.
   var chatEnabled: Bool? = nil
   /// Disable previous messages manually if messaging is enabled in the Beacon config.
-  var enablePreviousMessages: Bool? = nil
+  var enablePreviousMessages: Bool
+  /// If your Beacon has Docs and Messaging (email or chat) enabled, this mode controls the user experience of the beacon
+  var focusMode: HSBeaconFocusMode? = nil
 
   static func fromList(_ list: [Any?]) -> HSBeaconSettings? {
     let beaconId = list[0] as! String
@@ -84,7 +97,12 @@ struct HSBeaconSettings {
     let docsEnabled: Bool? = nilOrValue(list[2])
     let messagingEnabled: Bool? = nilOrValue(list[3])
     let chatEnabled: Bool? = nilOrValue(list[4])
-    let enablePreviousMessages: Bool? = nilOrValue(list[5])
+    let enablePreviousMessages = list[5] as! Bool
+    var focusMode: HSBeaconFocusMode? = nil
+    let focusModeEnumVal: Int? = nilOrValue(list[6])
+    if let focusModeRawValue = focusModeEnumVal {
+      focusMode = HSBeaconFocusMode(rawValue: focusModeRawValue)!
+    }
 
     return HSBeaconSettings(
       beaconId: beaconId,
@@ -92,7 +110,8 @@ struct HSBeaconSettings {
       docsEnabled: docsEnabled,
       messagingEnabled: messagingEnabled,
       chatEnabled: chatEnabled,
-      enablePreviousMessages: enablePreviousMessages
+      enablePreviousMessages: enablePreviousMessages,
+      focusMode: focusMode
     )
   }
   func toList() -> [Any?] {
@@ -103,6 +122,7 @@ struct HSBeaconSettings {
       messagingEnabled,
       chatEnabled,
       enablePreviousMessages,
+      focusMode?.rawValue,
     ]
   }
 }

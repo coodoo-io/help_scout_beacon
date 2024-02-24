@@ -12,7 +12,7 @@ import 'package:pigeon/pigeon.dart';
   ),
 )
 
-/// Beacon settings
+/// Beacon Settings overrides
 /// * https://developer.helpscout.com/beacon-2/android-api/beacon/com.helpscout.beacon.model/-beacon-screens/index.html
 /// * https://developer.helpscout.com/beacon-2/ios-api/Classes/HSBeaconSettings.html
 class HSBeaconSettings {
@@ -22,7 +22,8 @@ class HSBeaconSettings {
     this.docsEnabled,
     this.messagingEnabled,
     this.chatEnabled,
-    this.enablePreviousMessages,
+    this.enablePreviousMessages=true,
+    this.focusMode,
   });
 
   /// The Beacon ID to use.
@@ -44,7 +45,10 @@ class HSBeaconSettings {
   final bool? chatEnabled;
 
   /// Disable previous messages manually if messaging is enabled in the Beacon config.
-  final bool? enablePreviousMessages;
+  final bool enablePreviousMessages;
+
+  /// If your Beacon has Docs and Messaging (email or chat) enabled, this mode controls the user experience of the beacon
+  final HSBeaconFocusMode? focusMode;
 }
 
 /// Beacon route/screen
@@ -56,7 +60,7 @@ enum HSBeaconRoute {
   /// Chat screen
   chat,
 
-  /// Open docs with optional search paramter (requires docs enabled and optional search parameter)
+  /// Open docs with optional search parameter (requires docs enabled and optionally a search param)
   docs,
 
   /// Article screen (requires an Article ID and docs enabled)
@@ -67,6 +71,19 @@ enum HSBeaconRoute {
 
   /// Previous Messages if any exist.
   previousMessages,
+}
+
+/// HSBeaconFocusMode represents various configuration modes of Beacon. Allowing you to customize the experience your users have, from getting in contact right away, to a more self service approach.
+/// * More info is available AT https://docs.helpscout.com/article/1296-work-with-beacon-modes
+enum HSBeaconFocusMode {
+  /// An option to see both help articles and contact options side by side
+  neutral,
+
+  /// An option to see help articles first and contact options after interacting with content
+  selfService,
+
+  /// An option to see contact options first and help articles second
+  askFirst,
 }
 
 /// Beacon user
