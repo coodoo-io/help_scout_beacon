@@ -22,7 +22,7 @@ class HSBeaconSettings {
     this.docsEnabled,
     this.messagingEnabled,
     this.chatEnabled,
-    this.enablePreviousMessages=true,
+    this.enablePreviousMessages = true,
     this.focusMode,
   });
 
