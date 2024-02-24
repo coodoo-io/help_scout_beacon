@@ -34,7 +34,7 @@ HelpScoutBeacon.open(settings: settings, route: HSBeaconRoute.article, paramter:
 
 ### Cleanup / Logout
 
-Once done you can remove all data by logging out:
+Once done you can remove all data:
 
 ```dart
 HelpScoutBeacon.clear()
