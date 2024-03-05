@@ -4,6 +4,7 @@ import HSBeaconRoute
 import HSBeaconSettings
 import HSBeaconUser
 import HelpScoutBeaconApi
+import android.content.Context
 import com.helpscout.beacon.Beacon
 import com.helpscout.beacon.model.BeaconConfigOverrides
 import com.helpscout.beacon.model.BeaconScreens
@@ -16,11 +17,12 @@ import java.util.ArrayList
 import kotlin.text.isNullOrEmpty
 
 /** HelpScoutBeaconPlugin */
-class HelpScoutBeaconPlugin : FlutterPlugin, HelpScoutBeaconApi, ActivityAware {
-  private var currentActivity: android.app.Activity? = null
+class HelpScoutBeaconPlugin : FlutterPlugin, HelpScoutBeaconApi {
+  private lateinit var context: Context
 
   override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
     HelpScoutBeaconApi.setUp(flutterPluginBinding.binaryMessenger, this)
+    context = flutterPluginBinding.applicationContext;
   }
 
   //
@@ -45,12 +47,11 @@ class HelpScoutBeaconPlugin : FlutterPlugin, HelpScoutBeaconApi, ActivityAware {
    * presented as a modal.
    */
   override fun open(settings: HSBeaconSettings, route: HSBeaconRoute, parameter: String?) {
-    if (currentActivity != null) {
-      var parameters = ArrayList<String>()
+      var parameters = arrayListOf<String>()
       if (parameter != null) {
         parameters.add(parameter)
       }
-      Beacon.Builder().withBeaconId(settings.beaconId).build()
+      Beacon.Builder().withBeaconId(settings.beaconId).withLogsEnabled(true).build()
 
       val focusMode: FocusMode? = when(settings.focusMode) {
         HSBeaconFocusMode.NEUTRAL -> FocusMode.NEUTRAL
@@ -66,53 +67,29 @@ class HelpScoutBeaconPlugin : FlutterPlugin, HelpScoutBeaconApi, ActivityAware {
 
       // Navigation
       when (route) {
-        HSBeaconRoute.ASK -> BeaconActivity.open(currentActivity!!, BeaconScreens.ASK, parameters)
-        HSBeaconRoute.CHAT -> BeaconActivity.open(currentActivity!!, BeaconScreens.CHAT, parameters)
+        HSBeaconRoute.ASK -> BeaconActivity.open(context, BeaconScreens.ASK, arrayListOf<String>())
+        HSBeaconRoute.CHAT -> BeaconActivity.open(context, BeaconScreens.CHAT, arrayListOf<String>())
         HSBeaconRoute.DOCS -> {
           if(parameters.isNullOrEmpty()) {
-            return BeaconActivity.open(currentActivity!!, BeaconScreens.DEFAULT, parameters)
+            return BeaconActivity.open(context, BeaconScreens.DEFAULT, arrayListOf<String>())
           } else {
-            return BeaconActivity.open(currentActivity!!, BeaconScreens.SEARCH_SCREEN, parameters)
+            return BeaconActivity.open(context, BeaconScreens.SEARCH_SCREEN, parameters)
           }
         }
         HSBeaconRoute.ARTICLE ->
-            BeaconActivity.open(currentActivity!!, BeaconScreens.ARTICLE_SCREEN, parameters)
+            BeaconActivity.open(context, BeaconScreens.ARTICLE_SCREEN, parameters)
         HSBeaconRoute.CONTACT_FORM ->
-            BeaconActivity.open(currentActivity!!, BeaconScreens.CONTACT_FORM_SCREEN, parameters)
+            BeaconActivity.open(context, BeaconScreens.CONTACT_FORM_SCREEN, arrayListOf<String>())
         HSBeaconRoute.PREVIOUS_MESSAGES ->
-            BeaconActivity.open(currentActivity!!, BeaconScreens.PREVIOUS_MESSAGES, parameters)
-        else -> BeaconActivity.open(currentActivity!!, BeaconScreens.DEFAULT, parameters)
+            BeaconActivity.open(context, BeaconScreens.PREVIOUS_MESSAGES, arrayListOf<String>())
+        else -> BeaconActivity.open(context, BeaconScreens.DEFAULT, arrayListOf<String>())
       }
-    }
   }
   /** Logs the current Beacon user out and clears out their information from local storage. */
   override fun clear() {
     Beacon.clear()
   }
 
-  //
-  // Lifecycle and activity
-  //
-  override fun onAttachedToActivity(binding: ActivityPluginBinding) {
-    // Log.d("DART/NATIVE", "onAttachedToActivity")
-    currentActivity = binding.activity
-  }
-
-  // Method called by ActivityAware plugins to fetch the activity on re-initialization
-  override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
-    // Log.d("DART/NATIVE", "onReattachedToActivityForConfigChanges")
-    currentActivity = binding.activity
-  }
-
-  override fun onDetachedFromActivityForConfigChanges() {
-    // Log.d("DART/NATIVE", "onDetachedFromActivityForConfigChanges")
-    currentActivity = null
-  }
-
-  override fun onDetachedFromActivity() {
-    currentActivity = null
-  }
-  // End
 
   override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {
     HelpScoutBeaconApi.setUp(binding.binaryMessenger, null)

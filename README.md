@@ -12,10 +12,11 @@ HelpScoutBeacon.open(settings: settings);
 Optionally you can prefill the beacon with user meta data:
 
 ```dart
+HelpScoutBeacon.open(settings: HSBeaconSettings(beaconId: 'YOUR_BEACON_ID'));
+
 final user = HSBeaconUser(email: "john.doe@example.com", name: "John Doe");
 HelpScoutBeacon.identify(beaconUser: user);
 
-HelpScoutBeacon.open(settings: HSBeaconSettings(beaconId: 'YOUR_BEACON_ID'));
 ```
 
 ### Navigate
