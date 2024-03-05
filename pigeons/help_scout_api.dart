@@ -18,7 +18,7 @@ import 'package:pigeon/pigeon.dart';
 class HSBeaconSettings {
   const HSBeaconSettings({
     required this.beaconId,
-    this.debugLogging=false,
+    this.debugLogging = false,
     this.beaconTitle,
     this.docsEnabled,
     this.messagingEnabled,
