@@ -96,6 +96,8 @@ enum class HSBeaconFocusMode(val raw: Int) {
 data class HSBeaconSettings (
   /** The Beacon ID to use. */
   val beaconId: String,
+  /** Turn Logging on/off (should be disabled in production) */
+  val debugLogging: Boolean,
   /** The title used in the main Beacon interface. This is Support by default. */
   val beaconTitle: String? = null,
   /**
@@ -123,20 +125,22 @@ data class HSBeaconSettings (
     @Suppress("UNCHECKED_CAST")
     fun fromList(list: List<Any?>): HSBeaconSettings {
       val beaconId = list[0] as String
-      val beaconTitle = list[1] as String?
-      val docsEnabled = list[2] as Boolean?
-      val messagingEnabled = list[3] as Boolean?
-      val chatEnabled = list[4] as Boolean?
-      val enablePreviousMessages = list[5] as Boolean
-      val focusMode: HSBeaconFocusMode? = (list[6] as Int?)?.let {
+      val debugLogging = list[1] as Boolean
+      val beaconTitle = list[2] as String?
+      val docsEnabled = list[3] as Boolean?
+      val messagingEnabled = list[4] as Boolean?
+      val chatEnabled = list[5] as Boolean?
+      val enablePreviousMessages = list[6] as Boolean
+      val focusMode: HSBeaconFocusMode? = (list[7] as Int?)?.let {
         HSBeaconFocusMode.ofRaw(it)
       }
-      return HSBeaconSettings(beaconId, beaconTitle, docsEnabled, messagingEnabled, chatEnabled, enablePreviousMessages, focusMode)
+      return HSBeaconSettings(beaconId, debugLogging, beaconTitle, docsEnabled, messagingEnabled, chatEnabled, enablePreviousMessages, focusMode)
     }
   }
   fun toList(): List<Any?> {
     return listOf<Any?>(
       beaconId,
+      debugLogging,
       beaconTitle,
       docsEnabled,
       messagingEnabled,

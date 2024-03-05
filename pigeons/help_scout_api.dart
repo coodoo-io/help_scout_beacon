@@ -18,6 +18,7 @@ import 'package:pigeon/pigeon.dart';
 class HSBeaconSettings {
   const HSBeaconSettings({
     required this.beaconId,
+    this.debugLogging=false,
     this.beaconTitle,
     this.docsEnabled,
     this.messagingEnabled,
@@ -28,6 +29,9 @@ class HSBeaconSettings {
 
   /// The Beacon ID to use.
   final String beaconId;
+
+  /// Turn Logging on/off (should be disabled in production)
+  final bool debugLogging;
 
   /// The title used in the main Beacon interface. This is Support by default.
   final String? beaconTitle;

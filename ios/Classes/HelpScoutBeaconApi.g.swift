@@ -75,6 +75,8 @@ enum HSBeaconFocusMode: Int {
 struct HSBeaconSettings {
   /// The Beacon ID to use.
   var beaconId: String
+  /// Turn Logging on/off (should be disabled in production)
+  var debugLogging: Bool
   /// The title used in the main Beacon interface. This is Support by default.
   var beaconTitle: String? = nil
   /// Disable the Docs integration manually if it’s enabled in the Beacon config.
@@ -93,19 +95,21 @@ struct HSBeaconSettings {
 
   static func fromList(_ list: [Any?]) -> HSBeaconSettings? {
     let beaconId = list[0] as! String
-    let beaconTitle: String? = nilOrValue(list[1])
-    let docsEnabled: Bool? = nilOrValue(list[2])
-    let messagingEnabled: Bool? = nilOrValue(list[3])
-    let chatEnabled: Bool? = nilOrValue(list[4])
-    let enablePreviousMessages = list[5] as! Bool
+    let debugLogging = list[1] as! Bool
+    let beaconTitle: String? = nilOrValue(list[2])
+    let docsEnabled: Bool? = nilOrValue(list[3])
+    let messagingEnabled: Bool? = nilOrValue(list[4])
+    let chatEnabled: Bool? = nilOrValue(list[5])
+    let enablePreviousMessages = list[6] as! Bool
     var focusMode: HSBeaconFocusMode? = nil
-    let focusModeEnumVal: Int? = nilOrValue(list[6])
+    let focusModeEnumVal: Int? = nilOrValue(list[7])
     if let focusModeRawValue = focusModeEnumVal {
       focusMode = HSBeaconFocusMode(rawValue: focusModeRawValue)!
     }
 
     return HSBeaconSettings(
       beaconId: beaconId,
+      debugLogging: debugLogging,
       beaconTitle: beaconTitle,
       docsEnabled: docsEnabled,
       messagingEnabled: messagingEnabled,
@@ -117,6 +121,7 @@ struct HSBeaconSettings {
   func toList() -> [Any?] {
     return [
       beaconId,
+      debugLogging,
       beaconTitle,
       docsEnabled,
       messagingEnabled,

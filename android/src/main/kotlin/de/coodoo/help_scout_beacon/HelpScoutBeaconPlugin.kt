@@ -51,7 +51,7 @@ class HelpScoutBeaconPlugin : FlutterPlugin, HelpScoutBeaconApi {
       if (parameter != null) {
         parameters.add(parameter)
       }
-      Beacon.Builder().withBeaconId(settings.beaconId).withLogsEnabled(true).build()
+      Beacon.Builder().withBeaconId(settings.beaconId).withLogsEnabled(settings.debugLogging).build()
 
       val focusMode: FocusMode? = when(settings.focusMode) {
         HSBeaconFocusMode.NEUTRAL -> FocusMode.NEUTRAL
