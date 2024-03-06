@@ -11,10 +11,6 @@ import com.helpscout.beacon.model.BeaconScreens
 import com.helpscout.beacon.model.FocusMode
 import com.helpscout.beacon.ui.BeaconActivity
 import io.flutter.embedding.engine.plugins.FlutterPlugin
-import io.flutter.embedding.engine.plugins.activity.ActivityAware
-import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
-import java.util.ArrayList
-import kotlin.text.isNullOrEmpty
 
 /** HelpScoutBeaconPlugin */
 class HelpScoutBeaconPlugin : FlutterPlugin, HelpScoutBeaconApi {
@@ -28,6 +24,13 @@ class HelpScoutBeaconPlugin : FlutterPlugin, HelpScoutBeaconApi {
   //
   // Implementation
   //
+  /**
+   * Initialize the beacon with a beaconId and optional settings
+   */
+  override fun setup(settings: HSBeaconSettings) {
+    Beacon.Builder().withBeaconId(settings.beaconId).withLogsEnabled(settings.debugLogging).build()
+  }
+
   /**
    * Signs in with a Beacon user. This gives Beacon access to the user’s name, email address, and
    * signature.
@@ -51,7 +54,6 @@ class HelpScoutBeaconPlugin : FlutterPlugin, HelpScoutBeaconApi {
       if (parameter != null) {
         parameters.add(parameter)
       }
-      Beacon.Builder().withBeaconId(settings.beaconId).withLogsEnabled(settings.debugLogging).build()
 
       val focusMode: FocusMode? = when(settings.focusMode) {
         HSBeaconFocusMode.NEUTRAL -> FocusMode.NEUTRAL
@@ -87,7 +89,7 @@ class HelpScoutBeaconPlugin : FlutterPlugin, HelpScoutBeaconApi {
   }
   /** Logs the current Beacon user out and clears out their information from local storage. */
   override fun clear() {
-    Beacon.clear()
+    Beacon.logout()
   }
 
 

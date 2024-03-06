@@ -2,7 +2,17 @@ import 'package:help_scout_beacon/help_scout_beacon_api.g.dart';
 
 /// Flutter plugin to talk to the Help Scout iOS/Android Beacon SDK
 class HelpScoutBeacon {
-  final api = HelpScoutBeaconApi();
+  HelpScoutBeacon(this.settings) : api = HelpScoutBeaconApi() {
+    _setup();
+  }
+
+  final HSBeaconSettings settings;
+  final HelpScoutBeaconApi api;
+
+  /// Initialize the beacon with a beaconId and optional settings (only used in Android)
+  Future<void> _setup() async {
+    await api.setup(settings: settings);
+  }
 
   /// Signs in with a Beacon user. This gives Beacon access to the user’s name, email address, and signature.
   Future<void> identify({required HSBeaconUser beaconUser}) async {
@@ -11,7 +21,6 @@ class HelpScoutBeacon {
 
   /// Opens the Beacon SDK from a specific view controller. The Beacon view controller will be presented as a modal.
   Future<void> open({
-    required HSBeaconSettings settings,
     HSBeaconRoute route = HSBeaconRoute.ask,
     String? parameter,
   }) async {

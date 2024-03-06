@@ -224,6 +224,8 @@ class HelpScoutBeaconApiCodec: FlutterStandardMessageCodec {
 ///
 /// Generated protocol from Pigeon that represents a handler of messages from Flutter.
 protocol HelpScoutBeaconApi {
+  /// Initialize the beacon with a beaconId and optional settings
+  func setup(settings: HSBeaconSettings) throws
   /// Signs in with a Beacon user. This gives Beacon access to the user’s name, email address, and signature.
   func identify(beaconUser: HSBeaconUser) throws
   /// Opens the Beacon SDK from a specific view controller. The Beacon view controller will be presented as a modal.
@@ -238,6 +240,22 @@ class HelpScoutBeaconApiSetup {
   static var codec: FlutterStandardMessageCodec { HelpScoutBeaconApiCodec.shared }
   /// Sets up an instance of `HelpScoutBeaconApi` to handle messages through the `binaryMessenger`.
   static func setUp(binaryMessenger: FlutterBinaryMessenger, api: HelpScoutBeaconApi?) {
+    /// Initialize the beacon with a beaconId and optional settings
+    let setupChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.help_scout_beacon.HelpScoutBeaconApi.setup", binaryMessenger: binaryMessenger, codec: codec)
+    if let api = api {
+      setupChannel.setMessageHandler { message, reply in
+        let args = message as! [Any?]
+        let settingsArg = args[0] as! HSBeaconSettings
+        do {
+          try api.setup(settings: settingsArg)
+          reply(wrapResult(nil))
+        } catch {
+          reply(wrapError(error))
+        }
+      }
+    } else {
+      setupChannel.setMessageHandler(nil)
+    }
     /// Signs in with a Beacon user. This gives Beacon access to the user’s name, email address, and signature.
     let identifyChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.help_scout_beacon.HelpScoutBeaconApi.identify", binaryMessenger: binaryMessenger, codec: codec)
     if let api = api {

@@ -234,6 +234,8 @@ private object HelpScoutBeaconApiCodec : StandardMessageCodec() {
  * Generated interface from Pigeon that represents a handler of messages from Flutter.
  */
 interface HelpScoutBeaconApi {
+  /** Initialize the beacon with a beaconId and optional settings */
+  fun setup(settings: HSBeaconSettings)
   /** Signs in with a Beacon user. This gives Beacon access to the user’s name, email address, and signature. */
   fun identify(beaconUser: HSBeaconUser)
   /** Opens the Beacon SDK from a specific view controller. The Beacon view controller will be presented as a modal. */
@@ -249,6 +251,25 @@ interface HelpScoutBeaconApi {
     /** Sets up an instance of `HelpScoutBeaconApi` to handle messages through the `binaryMessenger`. */
     @Suppress("UNCHECKED_CAST")
     fun setUp(binaryMessenger: BinaryMessenger, api: HelpScoutBeaconApi?) {
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.help_scout_beacon.HelpScoutBeaconApi.setup", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val settingsArg = args[0] as HSBeaconSettings
+            var wrapped: List<Any?>
+            try {
+              api.setup(settingsArg)
+              wrapped = listOf<Any?>(null)
+            } catch (exception: Throwable) {
+              wrapped = wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
       run {
         val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.help_scout_beacon.HelpScoutBeaconApi.identify", codec)
         if (api != null) {

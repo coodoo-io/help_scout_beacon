@@ -125,6 +125,9 @@ class HSBeaconUser {
 /// Help Scout Beacon API
 @HostApi(dartHostTestHandler: 'TestHelpScoutBeaconApi')
 abstract class HelpScoutBeaconApi {
+  /// Initialize the beacon with a beaconId and optional settings
+  void setup({required HSBeaconSettings settings});
+
   /// Signs in with a Beacon user. This gives Beacon access to the user’s name, email address, and signature.
   void identify({required HSBeaconUser beaconUser});
 

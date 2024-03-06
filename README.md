@@ -1,5 +1,35 @@
 # Help Scout Beacon SDK for Flutter
 
+Streamline customer communications in your app with the Help Scout Beacon SDK for Flutter.
+
+## Requirements
+
+The beacon Android SDK needs the follow:
+
+* `minSdkVersion`: **21**
+* `compileSdkVersion`:**34**
+* Java 11 language feature support (compile with Java 17 as of version 5.0.0)
+* Proguard Rules for Flutter release mode builds needed
+
+Add this to your apps `android/app/build.gradle`:
+
+```groovy
+    buildTypes {
+        release {
+            // TODO: Add your own signing config for the release build.
+            // Signing with the debug keys for now, so `flutter run --release` works.
+            signingConfig signingConfigs.debug
+            // Beacon SDK needs Proguard
+            shrinkResources false
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+```
+
+## Usage
+
+### Quick start
 Configure the beacon with your `Beacon ID` and launch the beacon UI by calling `open`.
 
 ```dart

@@ -8,4 +8,7 @@
 -keep class io.flutter.plugins.**  { *; }
 -keep class androidx.lifecycle.** { *; }
 
+-keep class com.helpscout.** { *; }
+-keep class de.coodoo.** { *; }
+
 -keepattributes *Annotation*
