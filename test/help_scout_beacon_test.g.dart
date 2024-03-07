@@ -28,9 +28,9 @@ class _TestHelpScoutBeaconApiCodec extends StandardMessageCodec {
   @override
   Object? readValueOfType(int type, ReadBuffer buffer) {
     switch (type) {
-      case 128: 
+      case 128:
         return HSBeaconSettings.decode(readValue(buffer)!);
-      case 129: 
+      case 129:
         return HSBeaconUser.decode(readValue(buffer)!);
       default:
         return super.readValueOfType(type, buffer);
@@ -40,8 +40,10 @@ class _TestHelpScoutBeaconApiCodec extends StandardMessageCodec {
 
 /// Help Scout Beacon API
 abstract class TestHelpScoutBeaconApi {
-  static TestDefaultBinaryMessengerBinding? get _testBinaryMessengerBinding => TestDefaultBinaryMessengerBinding.instance;
-  static const MessageCodec<Object?> pigeonChannelCodec = _TestHelpScoutBeaconApiCodec();
+  static TestDefaultBinaryMessengerBinding? get _testBinaryMessengerBinding =>
+      TestDefaultBinaryMessengerBinding.instance;
+  static const MessageCodec<Object?> pigeonChannelCodec =
+      _TestHelpScoutBeaconApiCodec();
 
   /// Initialize the beacon with a beaconId and optional settings
   void setup({required HSBeaconSettings settings});
@@ -50,22 +52,32 @@ abstract class TestHelpScoutBeaconApi {
   void identify({required HSBeaconUser beaconUser});
 
   /// Opens the Beacon SDK from a specific view controller. The Beacon view controller will be presented as a modal.
-  void open({required HSBeaconSettings settings, HSBeaconRoute route = HSBeaconRoute.ask, String? parameter,});
+  void open({
+    required HSBeaconSettings settings,
+    HSBeaconRoute route = HSBeaconRoute.ask,
+    String? parameter,
+  });
 
   /// Logs the current Beacon user out and clears out their information from local storage.
   void clear();
 
-  static void setup(TestHelpScoutBeaconApi? api, {BinaryMessenger? binaryMessenger}) {
+  static void setup(TestHelpScoutBeaconApi? api,
+      {BinaryMessenger? binaryMessenger}) {
     {
-      final BasicMessageChannel<Object?> __pigeon_channel = BasicMessageChannel<Object?>(
-          'dev.flutter.pigeon.help_scout_beacon.HelpScoutBeaconApi.setup', pigeonChannelCodec,
-          binaryMessenger: binaryMessenger);
+      final BasicMessageChannel<Object?> __pigeon_channel =
+          BasicMessageChannel<Object?>(
+              'dev.flutter.pigeon.help_scout_beacon.HelpScoutBeaconApi.setup',
+              pigeonChannelCodec,
+              binaryMessenger: binaryMessenger);
       if (api == null) {
-        _testBinaryMessengerBinding!.defaultBinaryMessenger.setMockDecodedMessageHandler<Object?>(__pigeon_channel, null);
+        _testBinaryMessengerBinding!.defaultBinaryMessenger
+            .setMockDecodedMessageHandler<Object?>(__pigeon_channel, null);
       } else {
-        _testBinaryMessengerBinding!.defaultBinaryMessenger.setMockDecodedMessageHandler<Object?>(__pigeon_channel, (Object? message) async {
+        _testBinaryMessengerBinding!.defaultBinaryMessenger
+            .setMockDecodedMessageHandler<Object?>(__pigeon_channel,
+                (Object? message) async {
           assert(message != null,
-          'Argument for dev.flutter.pigeon.help_scout_beacon.HelpScoutBeaconApi.setup was null.');
+              'Argument for dev.flutter.pigeon.help_scout_beacon.HelpScoutBeaconApi.setup was null.');
           final List<Object?> args = (message as List<Object?>?)!;
           final HSBeaconSettings? arg_settings = (args[0] as HSBeaconSettings?);
           assert(arg_settings != null,
@@ -75,22 +87,28 @@ abstract class TestHelpScoutBeaconApi {
             return wrapResponse(empty: true);
           } on PlatformException catch (e) {
             return wrapResponse(error: e);
-          }          catch (e) {
-            return wrapResponse(error: PlatformException(code: 'error', message: e.toString()));
+          } catch (e) {
+            return wrapResponse(
+                error: PlatformException(code: 'error', message: e.toString()));
           }
         });
       }
     }
     {
-      final BasicMessageChannel<Object?> __pigeon_channel = BasicMessageChannel<Object?>(
-          'dev.flutter.pigeon.help_scout_beacon.HelpScoutBeaconApi.identify', pigeonChannelCodec,
+      final BasicMessageChannel<Object?> __pigeon_channel = BasicMessageChannel<
+              Object?>(
+          'dev.flutter.pigeon.help_scout_beacon.HelpScoutBeaconApi.identify',
+          pigeonChannelCodec,
           binaryMessenger: binaryMessenger);
       if (api == null) {
-        _testBinaryMessengerBinding!.defaultBinaryMessenger.setMockDecodedMessageHandler<Object?>(__pigeon_channel, null);
+        _testBinaryMessengerBinding!.defaultBinaryMessenger
+            .setMockDecodedMessageHandler<Object?>(__pigeon_channel, null);
       } else {
-        _testBinaryMessengerBinding!.defaultBinaryMessenger.setMockDecodedMessageHandler<Object?>(__pigeon_channel, (Object? message) async {
+        _testBinaryMessengerBinding!.defaultBinaryMessenger
+            .setMockDecodedMessageHandler<Object?>(__pigeon_channel,
+                (Object? message) async {
           assert(message != null,
-          'Argument for dev.flutter.pigeon.help_scout_beacon.HelpScoutBeaconApi.identify was null.');
+              'Argument for dev.flutter.pigeon.help_scout_beacon.HelpScoutBeaconApi.identify was null.');
           final List<Object?> args = (message as List<Object?>?)!;
           final HSBeaconUser? arg_beaconUser = (args[0] as HSBeaconUser?);
           assert(arg_beaconUser != null,
@@ -100,56 +118,73 @@ abstract class TestHelpScoutBeaconApi {
             return wrapResponse(empty: true);
           } on PlatformException catch (e) {
             return wrapResponse(error: e);
-          }          catch (e) {
-            return wrapResponse(error: PlatformException(code: 'error', message: e.toString()));
+          } catch (e) {
+            return wrapResponse(
+                error: PlatformException(code: 'error', message: e.toString()));
           }
         });
       }
     }
     {
-      final BasicMessageChannel<Object?> __pigeon_channel = BasicMessageChannel<Object?>(
-          'dev.flutter.pigeon.help_scout_beacon.HelpScoutBeaconApi.open', pigeonChannelCodec,
-          binaryMessenger: binaryMessenger);
+      final BasicMessageChannel<Object?> __pigeon_channel =
+          BasicMessageChannel<Object?>(
+              'dev.flutter.pigeon.help_scout_beacon.HelpScoutBeaconApi.open',
+              pigeonChannelCodec,
+              binaryMessenger: binaryMessenger);
       if (api == null) {
-        _testBinaryMessengerBinding!.defaultBinaryMessenger.setMockDecodedMessageHandler<Object?>(__pigeon_channel, null);
+        _testBinaryMessengerBinding!.defaultBinaryMessenger
+            .setMockDecodedMessageHandler<Object?>(__pigeon_channel, null);
       } else {
-        _testBinaryMessengerBinding!.defaultBinaryMessenger.setMockDecodedMessageHandler<Object?>(__pigeon_channel, (Object? message) async {
+        _testBinaryMessengerBinding!.defaultBinaryMessenger
+            .setMockDecodedMessageHandler<Object?>(__pigeon_channel,
+                (Object? message) async {
           assert(message != null,
-          'Argument for dev.flutter.pigeon.help_scout_beacon.HelpScoutBeaconApi.open was null.');
+              'Argument for dev.flutter.pigeon.help_scout_beacon.HelpScoutBeaconApi.open was null.');
           final List<Object?> args = (message as List<Object?>?)!;
           final HSBeaconSettings? arg_settings = (args[0] as HSBeaconSettings?);
           assert(arg_settings != null,
               'Argument for dev.flutter.pigeon.help_scout_beacon.HelpScoutBeaconApi.open was null, expected non-null HSBeaconSettings.');
-          final HSBeaconRoute? arg_route = args[1] == null ? null : HSBeaconRoute.values[args[1]! as int];
+          final HSBeaconRoute? arg_route =
+              args[1] == null ? null : HSBeaconRoute.values[args[1]! as int];
           assert(arg_route != null,
               'Argument for dev.flutter.pigeon.help_scout_beacon.HelpScoutBeaconApi.open was null, expected non-null HSBeaconRoute.');
           final String? arg_parameter = (args[2] as String?);
           try {
-            api.open(settings: arg_settings!, route: arg_route!, parameter: arg_parameter);
+            api.open(
+                settings: arg_settings!,
+                route: arg_route!,
+                parameter: arg_parameter);
             return wrapResponse(empty: true);
           } on PlatformException catch (e) {
             return wrapResponse(error: e);
-          }          catch (e) {
-            return wrapResponse(error: PlatformException(code: 'error', message: e.toString()));
+          } catch (e) {
+            return wrapResponse(
+                error: PlatformException(code: 'error', message: e.toString()));
           }
         });
       }
     }
     {
-      final BasicMessageChannel<Object?> __pigeon_channel = BasicMessageChannel<Object?>(
-          'dev.flutter.pigeon.help_scout_beacon.HelpScoutBeaconApi.clear', pigeonChannelCodec,
-          binaryMessenger: binaryMessenger);
+      final BasicMessageChannel<Object?> __pigeon_channel =
+          BasicMessageChannel<Object?>(
+              'dev.flutter.pigeon.help_scout_beacon.HelpScoutBeaconApi.clear',
+              pigeonChannelCodec,
+              binaryMessenger: binaryMessenger);
       if (api == null) {
-        _testBinaryMessengerBinding!.defaultBinaryMessenger.setMockDecodedMessageHandler<Object?>(__pigeon_channel, null);
+        _testBinaryMessengerBinding!.defaultBinaryMessenger
+            .setMockDecodedMessageHandler<Object?>(__pigeon_channel, null);
       } else {
-        _testBinaryMessengerBinding!.defaultBinaryMessenger.setMockDecodedMessageHandler<Object?>(__pigeon_channel, (Object? message) async {
+        _testBinaryMessengerBinding!.defaultBinaryMessenger
+            .setMockDecodedMessageHandler<Object?>(__pigeon_channel,
+                (Object? message) async {
           try {
             api.clear();
             return wrapResponse(empty: true);
           } on PlatformException catch (e) {
             return wrapResponse(error: e);
-          }          catch (e) {
-            return wrapResponse(error: PlatformException(code: 'error', message: e.toString()));
+          } catch (e) {
+            return wrapResponse(
+                error: PlatformException(code: 'error', message: e.toString()));
           }
         });
       }

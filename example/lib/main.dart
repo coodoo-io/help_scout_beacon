@@ -19,7 +19,8 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final _formKey = GlobalKey<FormState>();
-  final HelpScoutBeacon beacon = HelpScoutBeacon(HSBeaconSettings(beaconId: yourBeaconId, debugLogging: true));
+  final HelpScoutBeacon beacon = HelpScoutBeacon(
+      HSBeaconSettings(beaconId: yourBeaconId, debugLogging: true));
 
   @override
   Widget build(BuildContext context) {
@@ -38,49 +39,51 @@ class _MyAppState extends State<MyApp> {
               const Text("BeaconId: \n$yourBeaconId"),
 
               spacer,
-              
+
               // Start a beacon ui
               ElevatedButton(
-                onPressed: ()=>beacon.open(),
+                onPressed: () => beacon.open(),
                 child: const Text('Open (Default)'),
               ),
               spacer,
 
               ElevatedButton(
-                onPressed: ()=>beacon.open(route: HSBeaconRoute.ask),
+                onPressed: () => beacon.open(route: HSBeaconRoute.ask),
                 child: const Text('Open Ask'),
               ),
               spacer,
 
               ElevatedButton(
-                onPressed: ()=>beacon.open(route: HSBeaconRoute.chat),
+                onPressed: () => beacon.open(route: HSBeaconRoute.chat),
                 child: const Text('Open Chat'),
               ),
               spacer,
 
               ElevatedButton(
-                onPressed: ()=>beacon.open(route: HSBeaconRoute.docs),
+                onPressed: () => beacon.open(route: HSBeaconRoute.docs),
                 child: const Text('Open Docs'),
               ),
               spacer,
 
               ElevatedButton(
-                onPressed: ()=>beacon.open(route: HSBeaconRoute.docs, parameter: 'Help'),
+                onPressed: () =>
+                    beacon.open(route: HSBeaconRoute.docs, parameter: 'Help'),
                 child: const Text('Open Docs (+search term)'),
               ),
               spacer,
 
               ElevatedButton(
-                onPressed: ()=>beacon.open(route: HSBeaconRoute.contactForm),
+                onPressed: () => beacon.open(route: HSBeaconRoute.contactForm),
                 child: const Text('Open Contact Form'),
               ),
               spacer,
 
               ElevatedButton(
-                onPressed: ()=>beacon.open(route: HSBeaconRoute.previousMessages),
+                onPressed: () =>
+                    beacon.open(route: HSBeaconRoute.previousMessages),
                 child: const Text('Open Previous Messages'),
               ),
-              
+
               const SizedBox(height: 32),
 
               // Clear everything
@@ -88,8 +91,9 @@ class _MyAppState extends State<MyApp> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   FilledButton(
-                    onPressed: () =>
-                        beacon.identify(beaconUser: HSBeaconUser(email: "john.doe@example.com", name: "John Doe")),
+                    onPressed: () => beacon.identify(
+                        beaconUser: HSBeaconUser(
+                            email: "john.doe@example.com", name: "John Doe")),
                     child: const Text('Set User'),
                   ),
                   const SizedBox(width: 16),

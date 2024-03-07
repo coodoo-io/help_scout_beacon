@@ -2,30 +2,9 @@
 
 Streamline customer communications in your app with the Help Scout Beacon SDK for Flutter.
 
-## Requirements
 
-The beacon Android SDK needs the follow:
-
-* `minSdkVersion`: **21**
-* `compileSdkVersion`:**34**
-* Java 11 language feature support (compile with Java 17 as of version 5.0.0)
-* Proguard Rules for Flutter release mode builds needed
-
-Add this to your apps `android/app/build.gradle`:
-
-```groovy
-    buildTypes {
-        release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig signingConfigs.debug
-            // Beacon SDK needs Proguard
-            shrinkResources false
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-    }
-```
+[See Demo](./example/lib/main.dart)
+*Add your BeaconId in `main.dart`*
 
 ## Usage
 
@@ -33,8 +12,8 @@ Add this to your apps `android/app/build.gradle`:
 Configure the beacon with your `Beacon ID` and launch the beacon UI by calling `open`.
 
 ```dart
-final settings = HSBeaconSettings(beaconId: 'YOUR_BEACON_ID');
-HelpScoutBeacon.open(settings: settings);
+final HelpScoutBeacon beacon = HelpScoutBeacon(HSBeaconSettings(beaconId: 'YOUR_BEACON_ID'));
+beacon.open();
 ```
 
 ### Identify User
@@ -42,11 +21,12 @@ HelpScoutBeacon.open(settings: settings);
 Optionally you can prefill the beacon with user meta data:
 
 ```dart
-HelpScoutBeacon.open(settings: HSBeaconSettings(beaconId: 'YOUR_BEACON_ID'));
+final settings = HSBeaconSettings(beaconId: 'YOUR_BEACON_ID', debugLogging: true);
+final HelpScoutBeacon beacon = HelpScoutBeacon(settings);
 
 final user = HSBeaconUser(email: "john.doe@example.com", name: "John Doe");
-HelpScoutBeacon.identify(beaconUser: user);
-
+beacon.identify(beaconUser: user);
+beacon.open();
 ```
 
 ### Navigate
@@ -54,13 +34,13 @@ HelpScoutBeacon.identify(beaconUser: user);
 Open a desired page in the Help Scout beacon UI:
 
 ```dart
-HelpScoutBeacon.open(settings: settings, route: HSBeaconRoute.ask));
-HelpScoutBeacon.open(settings: settings, route: HSBeaconRoute.chat));
-HelpScoutBeacon.open(settings: settings, route: HSBeaconRoute.docs));
-HelpScoutBeacon.open(settings: settings, route: HSBeaconRoute.docs, parameter: 'search term'));
-HelpScoutBeacon.open(settings: settings, route: HSBeaconRoute.contactForm));
-HelpScoutBeacon.open(settings: settings, route: HSBeaconRoute.previousMessages));
-HelpScoutBeacon.open(settings: settings, route: HSBeaconRoute.article, paramter: 'article id'));
+beacon.open(route: HSBeaconRoute.ask);
+beacon.open(route: HSBeaconRoute.chat);
+beacon.open(route: HSBeaconRoute.contactForm);
+beacon.open(route: HSBeaconRoute.previousMessages);
+beacon.open(route: HSBeaconRoute.docs);
+beacon.open(route: HSBeaconRoute.docs, parameter: 'search term');
+beacon.open(route: HSBeaconRoute.article, paramter: 'article id');
 ```
 
 ### Cleanup / Logout
@@ -68,5 +48,5 @@ HelpScoutBeacon.open(settings: settings, route: HSBeaconRoute.article, paramter:
 Once done you can remove all data:
 
 ```dart
-HelpScoutBeacon.clear()
+beacon.clear()
 ```
