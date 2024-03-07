@@ -37,7 +37,6 @@ android {
     }
 
     kotlinOptions {
-        // recommend Kotlin jvm target to be Java 11
         jvmTarget = '1.8'
     }
 
