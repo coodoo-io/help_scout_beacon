@@ -24,7 +24,7 @@ if (flutterVersionName == null) {
 
 android {
     namespace "de.coodoo.help_scout_beacon_example"
-    compileSdk flutter.compileSdkVersion
+    compileSdk 34
     ndkVersion flutter.ndkVersion
 
     compileOptions {
@@ -61,7 +61,7 @@ android {
             shrinkResources false
             // useProguard true
             // Beacon SDK needs Proguard
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            // proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 }

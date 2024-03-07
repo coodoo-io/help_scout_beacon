@@ -9,7 +9,6 @@
 -keep class androidx.lifecycle.** { *; }
 
 -keep class com.helpscout.beacon.** { *; }
--keep class io.insert-koin.** { *; }
 -keep class de.coodoo.** { *; }
 
 -keepattributes *Annotation*
