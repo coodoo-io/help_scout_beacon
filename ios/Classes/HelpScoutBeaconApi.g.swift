@@ -75,6 +75,8 @@ enum HSBeaconFocusMode: Int {
 struct HSBeaconSettings {
   /// The Beacon ID to use.
   var beaconId: String
+  /// Turn Logging on/off (should be disabled in production)
+  var debugLogging: Bool
   /// The title used in the main Beacon interface. This is Support by default.
   var beaconTitle: String? = nil
   /// Disable the Docs integration manually if it’s enabled in the Beacon config.
@@ -93,19 +95,21 @@ struct HSBeaconSettings {
 
   static func fromList(_ list: [Any?]) -> HSBeaconSettings? {
     let beaconId = list[0] as! String
-    let beaconTitle: String? = nilOrValue(list[1])
-    let docsEnabled: Bool? = nilOrValue(list[2])
-    let messagingEnabled: Bool? = nilOrValue(list[3])
-    let chatEnabled: Bool? = nilOrValue(list[4])
-    let enablePreviousMessages = list[5] as! Bool
+    let debugLogging = list[1] as! Bool
+    let beaconTitle: String? = nilOrValue(list[2])
+    let docsEnabled: Bool? = nilOrValue(list[3])
+    let messagingEnabled: Bool? = nilOrValue(list[4])
+    let chatEnabled: Bool? = nilOrValue(list[5])
+    let enablePreviousMessages = list[6] as! Bool
     var focusMode: HSBeaconFocusMode? = nil
-    let focusModeEnumVal: Int? = nilOrValue(list[6])
+    let focusModeEnumVal: Int? = nilOrValue(list[7])
     if let focusModeRawValue = focusModeEnumVal {
       focusMode = HSBeaconFocusMode(rawValue: focusModeRawValue)!
     }
 
     return HSBeaconSettings(
       beaconId: beaconId,
+      debugLogging: debugLogging,
       beaconTitle: beaconTitle,
       docsEnabled: docsEnabled,
       messagingEnabled: messagingEnabled,
@@ -117,6 +121,7 @@ struct HSBeaconSettings {
   func toList() -> [Any?] {
     return [
       beaconId,
+      debugLogging,
       beaconTitle,
       docsEnabled,
       messagingEnabled,
@@ -219,6 +224,8 @@ class HelpScoutBeaconApiCodec: FlutterStandardMessageCodec {
 ///
 /// Generated protocol from Pigeon that represents a handler of messages from Flutter.
 protocol HelpScoutBeaconApi {
+  /// Initialize the beacon with a beaconId and optional settings
+  func setup(settings: HSBeaconSettings) throws
   /// Signs in with a Beacon user. This gives Beacon access to the user’s name, email address, and signature.
   func identify(beaconUser: HSBeaconUser) throws
   /// Opens the Beacon SDK from a specific view controller. The Beacon view controller will be presented as a modal.
@@ -233,6 +240,22 @@ class HelpScoutBeaconApiSetup {
   static var codec: FlutterStandardMessageCodec { HelpScoutBeaconApiCodec.shared }
   /// Sets up an instance of `HelpScoutBeaconApi` to handle messages through the `binaryMessenger`.
   static func setUp(binaryMessenger: FlutterBinaryMessenger, api: HelpScoutBeaconApi?) {
+    /// Initialize the beacon with a beaconId and optional settings
+    let setupChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.help_scout_beacon.HelpScoutBeaconApi.setup", binaryMessenger: binaryMessenger, codec: codec)
+    if let api = api {
+      setupChannel.setMessageHandler { message, reply in
+        let args = message as! [Any?]
+        let settingsArg = args[0] as! HSBeaconSettings
+        do {
+          try api.setup(settings: settingsArg)
+          reply(wrapResult(nil))
+        } catch {
+          reply(wrapError(error))
+        }
+      }
+    } else {
+      setupChannel.setMessageHandler(nil)
+    }
     /// Signs in with a Beacon user. This gives Beacon access to the user’s name, email address, and signature.
     let identifyChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.help_scout_beacon.HelpScoutBeaconApi.identify", binaryMessenger: binaryMessenger, codec: codec)
     if let api = api {

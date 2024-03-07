@@ -45,6 +45,9 @@ abstract class TestHelpScoutBeaconApi {
   static const MessageCodec<Object?> pigeonChannelCodec =
       _TestHelpScoutBeaconApiCodec();
 
+  /// Initialize the beacon with a beaconId and optional settings
+  void setup({required HSBeaconSettings settings});
+
   /// Signs in with a Beacon user. This gives Beacon access to the user’s name, email address, and signature.
   void identify({required HSBeaconUser beaconUser});
 
@@ -60,6 +63,37 @@ abstract class TestHelpScoutBeaconApi {
 
   static void setup(TestHelpScoutBeaconApi? api,
       {BinaryMessenger? binaryMessenger}) {
+    {
+      final BasicMessageChannel<Object?> __pigeon_channel =
+          BasicMessageChannel<Object?>(
+              'dev.flutter.pigeon.help_scout_beacon.HelpScoutBeaconApi.setup',
+              pigeonChannelCodec,
+              binaryMessenger: binaryMessenger);
+      if (api == null) {
+        _testBinaryMessengerBinding!.defaultBinaryMessenger
+            .setMockDecodedMessageHandler<Object?>(__pigeon_channel, null);
+      } else {
+        _testBinaryMessengerBinding!.defaultBinaryMessenger
+            .setMockDecodedMessageHandler<Object?>(__pigeon_channel,
+                (Object? message) async {
+          assert(message != null,
+              'Argument for dev.flutter.pigeon.help_scout_beacon.HelpScoutBeaconApi.setup was null.');
+          final List<Object?> args = (message as List<Object?>?)!;
+          final HSBeaconSettings? arg_settings = (args[0] as HSBeaconSettings?);
+          assert(arg_settings != null,
+              'Argument for dev.flutter.pigeon.help_scout_beacon.HelpScoutBeaconApi.setup was null, expected non-null HSBeaconSettings.');
+          try {
+            api.setup(settings: arg_settings!);
+            return wrapResponse(empty: true);
+          } on PlatformException catch (e) {
+            return wrapResponse(error: e);
+          } catch (e) {
+            return wrapResponse(
+                error: PlatformException(code: 'error', message: e.toString()));
+          }
+        });
+      }
+    }
     {
       final BasicMessageChannel<Object?> __pigeon_channel = BasicMessageChannel<
               Object?>(

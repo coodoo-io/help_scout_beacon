@@ -2,7 +2,7 @@ group 'de.coodoo.help_scout_beacon'
 version '1.0-SNAPSHOT'
 
 buildscript {
-    ext.kotlin_version = '1.7.10'
+    ext.kotlin_version = '1.6.10'
     repositories {
         google()
         mavenCentral()
@@ -52,7 +52,7 @@ android {
     dependencies {
         testImplementation 'org.jetbrains.kotlin:kotlin-test'
         testImplementation 'org.mockito:mockito-core:5.0.0'
-        implementation "com.helpscout:beacon:5.0.2"
+        implementation "com.helpscout:beacon:4.1.1"
     }
 
     testOptions {

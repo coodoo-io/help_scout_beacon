@@ -67,6 +67,7 @@ enum HSBeaconFocusMode {
 class HSBeaconSettings {
   HSBeaconSettings({
     required this.beaconId,
+    this.debugLogging = false,
     this.beaconTitle,
     this.docsEnabled,
     this.messagingEnabled,
@@ -77,6 +78,9 @@ class HSBeaconSettings {
 
   /// The Beacon ID to use.
   String beaconId;
+
+  /// Turn Logging on/off (should be disabled in production)
+  bool debugLogging;
 
   /// The title used in the main Beacon interface. This is Support by default.
   String? beaconTitle;
@@ -102,6 +106,7 @@ class HSBeaconSettings {
   Object encode() {
     return <Object?>[
       beaconId,
+      debugLogging,
       beaconTitle,
       docsEnabled,
       messagingEnabled,
@@ -115,13 +120,14 @@ class HSBeaconSettings {
     result as List<Object?>;
     return HSBeaconSettings(
       beaconId: result[0]! as String,
-      beaconTitle: result[1] as String?,
-      docsEnabled: result[2] as bool?,
-      messagingEnabled: result[3] as bool?,
-      chatEnabled: result[4] as bool?,
-      enablePreviousMessages: result[5]! as bool,
-      focusMode: result[6] != null
-          ? HSBeaconFocusMode.values[result[6]! as int]
+      debugLogging: result[1]! as bool,
+      beaconTitle: result[2] as String?,
+      docsEnabled: result[3] as bool?,
+      messagingEnabled: result[4] as bool?,
+      chatEnabled: result[5] as bool?,
+      enablePreviousMessages: result[6]! as bool,
+      focusMode: result[7] != null
+          ? HSBeaconFocusMode.values[result[7]! as int]
           : null,
     );
   }
@@ -221,6 +227,31 @@ class HelpScoutBeaconApi {
 
   static const MessageCodec<Object?> pigeonChannelCodec =
       _HelpScoutBeaconApiCodec();
+
+  /// Initialize the beacon with a beaconId and optional settings
+  Future<void> setup({required HSBeaconSettings settings}) async {
+    const String __pigeon_channelName =
+        'dev.flutter.pigeon.help_scout_beacon.HelpScoutBeaconApi.setup';
+    final BasicMessageChannel<Object?> __pigeon_channel =
+        BasicMessageChannel<Object?>(
+      __pigeon_channelName,
+      pigeonChannelCodec,
+      binaryMessenger: __pigeon_binaryMessenger,
+    );
+    final List<Object?>? __pigeon_replyList =
+        await __pigeon_channel.send(<Object?>[settings]) as List<Object?>?;
+    if (__pigeon_replyList == null) {
+      throw _createConnectionError(__pigeon_channelName);
+    } else if (__pigeon_replyList.length > 1) {
+      throw PlatformException(
+        code: __pigeon_replyList[0]! as String,
+        message: __pigeon_replyList[1] as String?,
+        details: __pigeon_replyList[2],
+      );
+    } else {
+      return;
+    }
+  }
 
   /// Signs in with a Beacon user. This gives Beacon access to the user’s name, email address, and signature.
   Future<void> identify({required HSBeaconUser beaconUser}) async {

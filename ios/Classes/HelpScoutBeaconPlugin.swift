@@ -9,6 +9,10 @@ public class HelpScoutBeaconPlugin: NSObject, FlutterPlugin, HelpScoutBeaconApi 
     HelpScoutBeaconApiSetup.setUp(binaryMessenger: messenger, api: api)
   }
 
+  func setup(settings: HSBeaconSettings) -> Void {
+    // No needed for the swift API
+  }
+
   /// Signs in with a Beacon user. This gives Beacon access to the user’s name, email address, and signature.
   func identify(beaconUser: HSBeaconUser) -> Void {
     let user = Beacon.HSBeaconUser()

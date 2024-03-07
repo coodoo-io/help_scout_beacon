@@ -2,6 +2,9 @@
 run:
 	cd example && flutter run
 
+run-release:
+	cd example && flutter run --release
+
 # Cleanup
 clean:
 	flutter clean
