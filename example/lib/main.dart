@@ -19,7 +19,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final _formKey = GlobalKey<FormState>();
-  final HelpScoutBeacon beacon = HelpScoutBeacon(HSBeaconSettings(beaconId: yourBeaconId));
+  final HelpScoutBeacon beacon = HelpScoutBeacon(HSBeaconSettings(beaconId: yourBeaconId, debugLogging: true));
 
   @override
   Widget build(BuildContext context) {

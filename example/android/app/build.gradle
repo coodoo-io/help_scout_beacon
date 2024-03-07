@@ -57,11 +57,11 @@ android {
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig signingConfigs.debug
             
-            minifyEnabled false
-            shrinkResources false
+            // minifyEnabled false
+            // shrinkResources false
             // useProguard true
             // Beacon SDK needs Proguard
-            // proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 }
