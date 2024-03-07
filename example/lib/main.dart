@@ -40,7 +40,7 @@ class _MyAppState extends State<MyApp> {
                   child: TextFormField(
                     onChanged: (value) => setState(() => beaconId = value),
                     onTapOutside: (_) {
-                      debugPrint("Tapped outside: Refreshing HelpScout Instance.");
+                      debugPrint("Tapped outside: Recreating HelpScout Instance.");
                       if (beaconId.isNotEmpty && beaconId.length > 10) {
                         final HSBeaconSettings settings = HSBeaconSettings(beaconId: beaconId);
                         beacon = HelpScoutBeacon(settings);

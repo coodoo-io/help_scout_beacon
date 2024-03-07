@@ -61,7 +61,7 @@ android {
             shrinkResources false
             // useProguard true
             // Beacon SDK needs Proguard
-            // proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 }

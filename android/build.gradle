@@ -32,7 +32,6 @@ android {
     compileSdk 34
 
     compileOptions {
-        coreLibraryDesugaringEnabled true
         sourceCompatibility JavaVersion.VERSION_11
         targetCompatibility JavaVersion.VERSION_11
     }
@@ -54,7 +53,6 @@ android {
     dependencies {
         testImplementation 'org.jetbrains.kotlin:kotlin-test'
         testImplementation 'org.mockito:mockito-core:5.0.0'
-        implementation "com.helpscout:beacon:5.0.2"
     }
 
     testOptions {
@@ -68,4 +66,9 @@ android {
             }
         }
     }
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation ("com.helpscout:beacon:5.0.2")
 }
