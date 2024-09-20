@@ -3,7 +3,7 @@ import 'package:help_scout_beacon/help_scout_beacon.dart';
 import 'package:help_scout_beacon/help_scout_beacon_api.g.dart';
 
 /// YOUR HELPSCOUT BEACON ID
-const String yourBeaconId = "";
+const String yourBeaconId = "a9a6f35e6795833c5b33ad8d3385895eb1442c31";
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,8 +19,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final _formKey = GlobalKey<FormState>();
-  final HelpScoutBeacon beacon = HelpScoutBeacon(
-      HSBeaconSettings(beaconId: yourBeaconId, debugLogging: true));
+  final HelpScoutBeacon beacon = HelpScoutBeacon(HSBeaconSettings(beaconId: yourBeaconId, debugLogging: true));
 
   @override
   Widget build(BuildContext context) {
@@ -66,8 +65,7 @@ class _MyAppState extends State<MyApp> {
               spacer,
 
               ElevatedButton(
-                onPressed: () =>
-                    beacon.open(route: HSBeaconRoute.docs, parameter: 'Help'),
+                onPressed: () => beacon.open(route: HSBeaconRoute.docs, parameter: 'Help'),
                 child: const Text('Open Docs (+search term)'),
               ),
               spacer,
@@ -79,8 +77,7 @@ class _MyAppState extends State<MyApp> {
               spacer,
 
               ElevatedButton(
-                onPressed: () =>
-                    beacon.open(route: HSBeaconRoute.previousMessages),
+                onPressed: () => beacon.open(route: HSBeaconRoute.previousMessages),
                 child: const Text('Open Previous Messages'),
               ),
 
@@ -91,9 +88,8 @@ class _MyAppState extends State<MyApp> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   FilledButton(
-                    onPressed: () => beacon.identify(
-                        beaconUser: HSBeaconUser(
-                            email: "john.doe@example.com", name: "John Doe")),
+                    onPressed: () =>
+                        beacon.identify(beaconUser: HSBeaconUser(email: "john.doe@example.com", name: "John Doe")),
                     child: const Text('Set User'),
                   ),
                   const SizedBox(width: 16),
