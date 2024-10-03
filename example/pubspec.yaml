@@ -1,11 +1,11 @@
 name: help_scout_beacon_example
 description: "Demonstrates how to use the help_scout_beacon plugin."
-
-
 publish_to: 'none' 
+version: 1.0.0+1
 
 environment:
-  sdk: '>=3.3.0 <4.0.0'
+  sdk: ^3.5.0
+  flutter: ^3.24.3
 
 dependencies:
   flutter:
@@ -13,14 +13,13 @@ dependencies:
 
   help_scout_beacon:
     path: ../
-  cupertino_icons: ^1.0.6
 
 dev_dependencies:
   integration_test:
     sdk: flutter
   flutter_test:
     sdk: flutter
-  flutter_lints: ^3.0.0
+  flutter_lints: ^4.0.0
 
 flutter:
   uses-material-design: true
