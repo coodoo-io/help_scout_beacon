@@ -1,8 +1,7 @@
 name: help_scout_beacon_example
 description: "Demonstrates how to use the help_scout_beacon plugin."
-
-
 publish_to: 'none' 
+version: 1.0.0+1
 
 environment:
   sdk: ^3.5.0
@@ -20,7 +19,7 @@ dev_dependencies:
     sdk: flutter
   flutter_test:
     sdk: flutter
-  flutter_lints: ^3.0.2
+  flutter_lints: ^4.0.0
 
 flutter:
   uses-material-design: true
