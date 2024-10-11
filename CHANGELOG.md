@@ -1,10 +1,5 @@
 # Changelog
 
-## [0.0.3]
-
-- Fixing Crashes in Android Plugin
-- Updating Examples to Flutter 3.24.3
-
 ## [0.0.2]
 
 - First successful use in a production app. Removing `-dev`.
