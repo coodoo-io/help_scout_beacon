@@ -19,6 +19,10 @@ class HelpScoutBeacon {
     await api.identify(beaconUser: beaconUser);
   }
 
+  Future<void> addSession({required HSBeaconSession session}) async {
+    await api.addSession(session: session);
+  }
+
   /// Opens the Beacon SDK from a specific view controller. The Beacon view controller will be presented as a modal.
   Future<void> open({
     HSBeaconRoute route = HSBeaconRoute.ask,

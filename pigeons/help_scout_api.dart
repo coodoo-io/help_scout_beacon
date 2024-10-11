@@ -122,6 +122,12 @@ class HSBeaconUser {
   final Map? attributes;
 }
 
+class HSBeaconSession {
+  const HSBeaconSession({this.attributes});
+
+  final Map? attributes;
+}
+
 /// Help Scout Beacon API
 @HostApi(dartHostTestHandler: 'TestHelpScoutBeaconApi')
 abstract class HelpScoutBeaconApi {
@@ -130,6 +136,8 @@ abstract class HelpScoutBeaconApi {
 
   /// Signs in with a Beacon user. This gives Beacon access to the user’s name, email address, and signature.
   void identify({required HSBeaconUser beaconUser});
+
+  void addSession({required HSBeaconSession session});
 
   /// Opens the Beacon SDK from a specific view controller. The Beacon view controller will be presented as a modal.
   void open({

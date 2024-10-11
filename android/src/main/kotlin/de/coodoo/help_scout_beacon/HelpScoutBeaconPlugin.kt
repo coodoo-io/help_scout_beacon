@@ -3,6 +3,7 @@ package de.coodoo.help_scout_beacon
 import HSBeaconRoute
 import HSBeaconSettings
 import HSBeaconUser
+import HSBeaconSession
 import HelpScoutBeaconApi
 import android.content.Context
 import com.helpscout.beacon.Beacon
@@ -44,6 +45,18 @@ class HelpScoutBeaconPlugin : FlutterPlugin, HelpScoutBeaconApi {
         beaconUser.avatar
     )
   }
+
+  override fun addSession(beaconSession: HSBeaconSession) {
+    val attributes = beaconSession.attributes
+    if (attributes != null) {
+        val sessionAttributes = attributes.mapKeys { it.key.toString() }
+                                          .mapValues { it.value?.toString() ?: "" }
+        Beacon.setSessionAttributes(sessionAttributes)
+    } else {
+        Beacon.setSessionAttributes(emptyMap())
+    }
+  }
+
 
   /**
    * Opens the Beacon SDK from a specific view controller. The Beacon view controller will be
