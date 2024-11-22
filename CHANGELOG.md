@@ -1,9 +1,13 @@
 # Changelog
 
-## [0.0.4]
+## [0.0.5]
 
 - Updating to the latest package
 - Adding required pro-guard rules
+
+## [0.0.4]
+
+- Retracted version
 
 ## [0.0.3]
 
