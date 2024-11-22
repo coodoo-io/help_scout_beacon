@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.0.4]
+
+- Updating to the latest package
+- Adding required pro-guard rules
+
 ## [0.0.3]
 
 - Fixing Crashes in Android Plugin
