@@ -3,7 +3,7 @@ import 'package:help_scout_beacon/help_scout_beacon.dart';
 import 'package:help_scout_beacon/help_scout_beacon_api.g.dart';
 
 /// YOUR HELPSCOUT BEACON ID
-const String yourBeaconId = "";
+const String yourBeaconId = "215bfd00-95b7-489b-bcd6-5400cd9a7a94";
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();

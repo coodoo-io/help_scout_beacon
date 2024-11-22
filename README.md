@@ -50,3 +50,8 @@ Once done you can remove all data:
 ```dart
 beacon.clear()
 ```
+
+### Release mode
+
+The newest version on Android requires to setup pro-guard rules.
+See example project [proguard-rules.pro](.example/android/app/proguard-rules.pro)
