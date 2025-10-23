@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.0.6]
+- Updating to the latest package
+- fix attributes not submitted
+
 ## [0.0.5]
 
 - Updating to the latest package

@@ -2,15 +2,14 @@ group 'de.coodoo.help_scout_beacon'
 version '1.0-SNAPSHOT'
 
 buildscript {
-    ext.kotlin_version = '1.8.20'
     repositories {
         google()
         mavenCentral()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.1.0'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath("com.android.tools.build:gradle:8.13.0")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:2.2.20")
     }
 }
 
@@ -29,15 +28,15 @@ android {
         namespace 'de.coodoo.help_scout_beacon'
     }
 
-    compileSdk 34
+    compileSdk = 36
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     kotlinOptions {
-        jvmTarget = '11'
+        jvmTarget = JavaVersion.VERSION_17
     }
 
     sourceSets {
@@ -46,13 +45,13 @@ android {
     }
 
     defaultConfig {
-        minSdkVersion 21
+        minSdk = 24
     }
 
     dependencies {
         testImplementation 'org.jetbrains.kotlin:kotlin-test'
-        testImplementation 'org.mockito:mockito-core:5.0.0'
-        implementation "com.helpscout:beacon:5.2.0"
+        testImplementation("org.mockito:mockito-core:5.20.0")
+        implementation "com.helpscout:beacon:6.0.1"
     }
 
     testOptions {

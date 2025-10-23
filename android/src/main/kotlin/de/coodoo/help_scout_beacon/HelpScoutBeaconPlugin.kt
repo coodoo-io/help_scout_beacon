@@ -43,6 +43,11 @@ class HelpScoutBeaconPlugin : FlutterPlugin, HelpScoutBeaconApi {
         beaconUser.jobTitle,
         beaconUser.avatar
     )
+
+    beaconUser.attributes?.forEach { (key, value) ->
+        Beacon.addAttributeWithKey(key.toString(), value?.toString()?:"");
+    }
+//    Beacon.addAttributeWithKey("user_id", "42");
   }
 
   /**
