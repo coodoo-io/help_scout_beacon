@@ -21,7 +21,7 @@ public class HelpScoutBeaconPlugin: NSObject, FlutterPlugin, HelpScoutBeaconApi 
     user.company = beaconUser.company
     user.jobTitle = beaconUser.jobTitle
     user.avatar = beaconUser.avatar != nil ? URL(string: beaconUser.avatar!) : nil
-    user.attributes = attributes
+    user.attributes = beaconUser.attributes
     Beacon.HSBeacon.identify(user)
   }
 
