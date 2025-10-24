@@ -21,16 +21,8 @@ public class HelpScoutBeaconPlugin: NSObject, FlutterPlugin, HelpScoutBeaconApi 
     user.company = beaconUser.company
     user.jobTitle = beaconUser.jobTitle
     user.avatar = beaconUser.avatar != nil ? URL(string: beaconUser.avatar!) : nil
-    
+    user.attributes = attributes
     Beacon.HSBeacon.identify(user)
-
-    if let attributes = beaconUser.attributes {
-        for (key, value) in attributes {
-	     Beacon.HSBeacon.addAttribute(withKey: String(describing: key),
-	                                   value: String(describing: value ?? ""))
-        }
-    }
-
   }
 
   /// Opens the Beacon SDK from a specific view controller. The Beacon view controller will be presented as a modal.
