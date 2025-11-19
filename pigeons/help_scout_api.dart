@@ -137,6 +137,11 @@ abstract class HelpScoutBeaconApi {
     HSBeaconRoute route = HSBeaconRoute.ask,
     String? parameter,
   });
+  void prefillContactForm(
+    String? subject,
+    String? message,
+    List<String>? attachments,
+  );
 
   /// Logs the current Beacon user out and clears out their information from local storage.
   void clear();

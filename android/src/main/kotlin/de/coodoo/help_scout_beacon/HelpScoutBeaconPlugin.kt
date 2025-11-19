@@ -4,6 +4,8 @@ import HSBeaconRoute
 import HSBeaconSettings
 import HSBeaconUser
 import HelpScoutBeaconApi
+import android.net.Uri
+import com.helpscout.beacon.model.PreFilledForm
 import android.content.Context
 import com.helpscout.beacon.Beacon
 import com.helpscout.beacon.model.BeaconConfigOverrides
@@ -100,4 +102,18 @@ class HelpScoutBeaconPlugin : FlutterPlugin, HelpScoutBeaconApi {
   override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {
     HelpScoutBeaconApi.setUp(binding.binaryMessenger, null)
   }
+
+  override fun prefillContactForm(subject: String?, message: String?, attachments: List<String>?) {
+    val attachmentUris = attachments?.map { Uri.parse(it).toString() } ?: emptyList()
+
+    val form = PreFilledForm(
+        "",
+        subject ?: "",
+        message ?: "",
+        emptyMap<Int, String>(),
+        attachmentUris,
+        ""
+    )
+    Beacon.addPreFilledForm(form)
+ }
 }

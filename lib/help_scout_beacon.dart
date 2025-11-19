@@ -31,4 +31,12 @@ class HelpScoutBeacon {
   Future<void> clear() async {
     await api.clear();
   }
+
+  Future<void> prefillContactForm({
+    String? subject,
+    String? message,
+    List<String>? attachmentUris,
+  }) async {
+    await api.prefillContactForm(subject, message, attachmentUris);
+  }
 }
