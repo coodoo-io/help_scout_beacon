@@ -55,7 +55,10 @@ public class HelpScoutBeaconPlugin: NSObject, FlutterPlugin, HelpScoutBeaconApi 
     if(fMode != nil) {
       settings.focusModeOverride = fMode!;
     }
-      
+
+    // method to be called when the user navigates to the contact form.
+    settings.delegate = BeaconPrefillDelegate.shared
+
     switch route {
       case .ask:
         Beacon.HSBeacon.navigate(BeaconRoute.ask, settings: settings) // ask screen
@@ -82,4 +85,49 @@ public class HelpScoutBeaconPlugin: NSObject, FlutterPlugin, HelpScoutBeaconApi 
   func clear() -> Void {
     Beacon.HSBeacon.logout()
   }
+
+  /// Receives pre-fill data from Flutter and stores it in the singleton delegate.
+  /// This data will be used later when the `prefill` delegate method is called by the SDK.
+  func prefillContactForm(subject: String?, message: String?, attachments: [String]?) {
+      let delegate = BeaconPrefillDelegate.shared
+      delegate.subject = subject
+      delegate.message = message
+      delegate.attachments = attachments
+  }
 }
+
+// A singleton delegate class to handle pre-filling the Help Scout Beacon contact form.
+class BeaconPrefillDelegate: NSObject, HSBeaconDelegate {
+
+    static let shared = BeaconPrefillDelegate()
+    var subject: String?
+    var message: String?
+    var attachments: [String]?
+
+    // This delegate method is called by the Beacon SDK just before the contact form is displayed.
+    func prefill(_ form: HSBeaconContactForm) {
+        form.subject = self.subject ?? ""
+        form.text = self.message ?? ""
+
+        guard let attachmentPaths = self.attachments, !attachmentPaths.isEmpty else {
+            return
+        }
+
+        // Iterate over each file path and create a data attachment.
+        attachmentPaths.forEach { path in
+            let fileUrl = URL(fileURLWithPath: path)
+            let filename = fileUrl.lastPathComponent
+
+            do {
+                if FileManager.default.fileExists(atPath: path) {
+                    let fileData = try Data(contentsOf: fileUrl)
+                    form.addAttachment(filename, data: fileData)
+                }
+            } catch {
+                // Silently fail if the file cannot be read, to avoid crashing the app.
+            }
+        }
+    }
+}
+
+
