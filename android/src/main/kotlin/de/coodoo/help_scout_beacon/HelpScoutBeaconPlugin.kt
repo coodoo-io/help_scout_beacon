@@ -13,8 +13,6 @@ import com.helpscout.beacon.model.BeaconScreens
 import com.helpscout.beacon.model.FocusMode
 import com.helpscout.beacon.ui.BeaconActivity
 import io.flutter.embedding.engine.plugins.FlutterPlugin
-import android.net.Uri
-import java.io.File
 
 /** HelpScoutBeaconPlugin */
 class HelpScoutBeaconPlugin : FlutterPlugin, HelpScoutBeaconApi {
@@ -105,25 +103,8 @@ class HelpScoutBeaconPlugin : FlutterPlugin, HelpScoutBeaconApi {
     HelpScoutBeaconApi.setUp(binding.binaryMessenger, null)
   }
 
-  /**
-   * Receives pre-fill data from Flutter and prepares it for the Help Scout Beacon.
-   * This method expects the `attachments` list to contain absolute file paths
-   * to files created by the Flutter application. It converts these paths into
-   * standard `file:///` URIs before adding them to the pre-filled form.
-  */
   override fun prefillContactForm(subject: String?, message: String?, attachments: List<String>?) {
-    // Map the list of file paths from Flutter into a list of valid URI strings.
-    val attachmentUris = attachments?.mapNotNull { path ->
-        try {
-            // Create a File object from the provided path.
-            val file = File(path)
-            // Convert the File object to a URI string (e.g., "file:///...").
-            Uri.fromFile(file).toString()
-        } catch (e: Exception) {
-            // If the path is invalid, ignore it to prevent a crash.
-            null
-        }
-    } ?: emptyList()
+    val attachmentUris = attachments?.map { Uri.parse(it).toString() } ?: emptyList()
 
     // Create the PreFilledForm object with the prepared data.
     val form = PreFilledForm(
