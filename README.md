@@ -43,6 +43,13 @@ beacon.open(route: HSBeaconRoute.docs, parameter: 'search term');
 beacon.open(route: HSBeaconRoute.article, paramter: 'article id');
 ```
 
+Open a prefilled Contact Form page with a subject, message, and the attachments in the Help Scout beacon UI:
+
+```dart
+await beacon.prefillContactForm( subject: 'Help Scout', message: 'This is sample prefilled message', attachments: [file]);
+beacon.open(route: HSBeaconRoute.contactForm);
+```
+
 ### Cleanup / Logout
 
 Once done you can remove all data:
