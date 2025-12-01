@@ -89,20 +89,22 @@ class _MyAppState extends State<MyApp> {
                     final logsJsonString = logs.join('\n');
 
                     final directory = await getApplicationDocumentsDirectory();
-                    final logFile = File('${directory.path}/session_logs.txt');
-                    await logFile.writeAsString(logsJsonString);
-
+                    final logFile = File('${directory.path}/session_logs.txt'); //Create new file
+                    await logFile.writeAsString(logsJsonString);  //Write data or logs into the file
+                    
+                    //call prefillContactForm with subject, message and attachments
                     await beacon.prefillContactForm(
                       subject: 'Help Scout',
                       message: 'This is sample prefilled message',
                       attachments: [logFile],
                     );
+                    // Now open contactForm
+                    beacon.open(route: HSBeaconRoute.contactForm);
                   } on Exception catch (e) {
                     if (kDebugMode) {
                       print('open exception: $e');
                     }
                   }
-                  beacon.open(route: HSBeaconRoute.contactForm);
                 },
                 child: const Text('Open Prefilled Contact Form'),
               ),

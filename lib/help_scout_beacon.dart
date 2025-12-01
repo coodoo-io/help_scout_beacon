@@ -32,15 +32,15 @@ class HelpScoutBeacon {
   Future<void> clear() async {
     await api.clear();
   }
-
+  //Prefill contact form with subject, message and attachments.
   Future<void> prefillContactForm({
     String? subject,
     String? message,
     List<File>? attachments,
   }) async {
     final attachmentUris = attachments?.map((attachment) {
-      if (Platform.isIOS) {
-        return attachment.path;
+      if (Platform.isIOS) { // To solve plateform specific path related problem of files
+        return attachment.path;  
       } else {
         return attachment.uri.toString();
       }

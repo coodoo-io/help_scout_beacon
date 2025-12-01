@@ -115,6 +115,6 @@ class HelpScoutBeaconPlugin : FlutterPlugin, HelpScoutBeaconApi {
         attachmentUris,
         ""
     )
-    Beacon.addPreFilledForm(form)
+    Beacon.addPreFilledForm(form) // Add all data to contact form
   }
 }
