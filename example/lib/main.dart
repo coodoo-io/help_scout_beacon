@@ -1,6 +1,10 @@
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:help_scout_beacon/help_scout_beacon.dart';
 import 'package:help_scout_beacon/help_scout_beacon_api.g.dart';
+import 'package:path_provider/path_provider.dart';
 
 /// YOUR HELPSCOUT BEACON ID
 const String yourBeaconId = "";
@@ -75,6 +79,32 @@ class _MyAppState extends State<MyApp> {
               ElevatedButton(
                 onPressed: () => beacon.open(route: HSBeaconRoute.contactForm),
                 child: const Text('Open Contact Form'),
+              ),
+              spacer,
+
+              ElevatedButton(
+                onPressed: () async {
+                  try {
+                    final logs = ['This is a sample logs text'];
+                    final logsJsonString = logs.join('\n');
+
+                    final directory = await getApplicationDocumentsDirectory();
+                    final logFile = File('${directory.path}/session_logs.txt');
+                    await logFile.writeAsString(logsJsonString);
+
+                    await beacon.prefillContactForm(
+                      subject: 'Help Scout',
+                      message: 'This is sample prefilled message',
+                      attachments: [logFile],
+                    );
+                  } on Exception catch (e) {
+                    if (kDebugMode) {
+                      print('open exception: $e');
+                    }
+                  }
+                  beacon.open(route: HSBeaconRoute.contactForm);
+                },
+                child: const Text('Open Prefilled Contact Form'),
               ),
               spacer,
 

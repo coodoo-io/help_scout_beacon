@@ -1,4 +1,5 @@
 import 'package:help_scout_beacon/help_scout_beacon_api.g.dart';
+import 'dart:io';
 
 /// Flutter plugin to talk to the Help Scout iOS/Android Beacon SDK
 class HelpScoutBeacon {
@@ -35,8 +36,16 @@ class HelpScoutBeacon {
   Future<void> prefillContactForm({
     String? subject,
     String? message,
-    List<String>? attachmentUris,
+    List<File>? attachments,
   }) async {
+    final attachmentUris = attachments?.map((attachment) {
+      if (Platform.isIOS) {
+        return attachment.path;
+      } else {
+        return attachment.uri.toString();
+      }
+    }).toList();
+
     await api.prefillContactForm(subject, message, attachmentUris);
   }
 }
