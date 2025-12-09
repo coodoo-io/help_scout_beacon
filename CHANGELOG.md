@@ -1,5 +1,8 @@
 # Changelog
 
+## [0.0.7]
+- Adding option to prefill a contact form with a subject, message, and the attachments
+
 ## [0.0.6]
 - Updating to the latest package
 - fix attributes not submitted
