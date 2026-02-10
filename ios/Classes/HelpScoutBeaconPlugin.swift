@@ -24,7 +24,8 @@ public class HelpScoutBeaconPlugin: NSObject, FlutterPlugin, HelpScoutBeaconApi 
 
     if let attributes = beaconUser.attributes {
         for (key, value) in attributes {
-            let stringKey = String(describing: key)
+            guard let unwrappedKey = key else { continue }
+            let stringKey = String(describing: unwrappedKey)
             let stringValue = value != nil ? String(describing: value!) : ""
             user.addAttribute(withKey: stringKey, value: stringValue)
         }
@@ -129,5 +130,3 @@ class BeaconPrefillDelegate: NSObject, HSBeaconDelegate {
         }
     }
 }
-
-
