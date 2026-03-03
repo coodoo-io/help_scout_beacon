@@ -12,6 +12,7 @@ import com.helpscout.beacon.model.BeaconConfigOverrides
 import com.helpscout.beacon.model.BeaconScreens
 import com.helpscout.beacon.model.FocusMode
 import com.helpscout.beacon.ui.BeaconActivity
+import com.helpscout.beacon.model.ContactFormConfigApi
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 
 /** HelpScoutBeaconPlugin */
@@ -91,15 +92,11 @@ class HelpScoutBeaconPlugin : FlutterPlugin, HelpScoutBeaconApi {
             HSBeaconRoute.ARTICLE -> BeaconActivity.open(context, BeaconScreens.ARTICLE_SCREEN, parameters)
 
             HSBeaconRoute.CONTACT_FORM -> BeaconActivity.open(
-                context,
-                BeaconScreens.CONTACT_FORM_SCREEN,
-                arrayListOf<String>()
+                context, BeaconScreens.CONTACT_FORM_SCREEN, arrayListOf<String>()
             )
 
             HSBeaconRoute.PREVIOUS_MESSAGES -> BeaconActivity.open(
-                context,
-                BeaconScreens.PREVIOUS_MESSAGES,
-                arrayListOf<String>()
+                context, BeaconScreens.PREVIOUS_MESSAGES, arrayListOf<String>()
             )
 
             else -> BeaconActivity.open(context, BeaconScreens.DEFAULT, arrayListOf<String>())
