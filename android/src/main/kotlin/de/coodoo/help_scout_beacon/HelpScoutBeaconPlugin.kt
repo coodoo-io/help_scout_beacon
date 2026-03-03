@@ -12,7 +12,7 @@ import com.helpscout.beacon.model.BeaconConfigOverrides
 import com.helpscout.beacon.model.BeaconScreens
 import com.helpscout.beacon.model.FocusMode
 import com.helpscout.beacon.ui.BeaconActivity
-import com.helpscout.beacon.model.ContactFormConfigApi
+import com.helpscout.beacon.model.ContactFormConfig
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 
 /** HelpScoutBeaconPlugin */
@@ -73,7 +73,7 @@ class HelpScoutBeaconPlugin : FlutterPlugin, HelpScoutBeaconApi {
             chatEnabled = settings.chatEnabled,
             focusMode = focusMode,
             enablePreviousMessages = settings.enablePreviousMessages,
-            contactForm = null as ContactFormConfigApi?
+            contactForm = null as ContactFormConfig?
         );
         Beacon.setConfigOverrides(configOverrides);
 
