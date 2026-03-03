@@ -39,11 +39,7 @@ class HelpScoutBeaconPlugin : FlutterPlugin, HelpScoutBeaconApi {
      */
     override fun identify(beaconUser: HSBeaconUser) {
         Beacon.identify(
-            beaconUser.email,
-            beaconUser.name,
-            beaconUser.company,
-            beaconUser.jobTitle,
-            beaconUser.avatar
+            beaconUser.email, beaconUser.name, beaconUser.company, beaconUser.jobTitle, beaconUser.avatar
         )
 
         beaconUser.attributes?.forEach { (key, value) ->
@@ -72,8 +68,11 @@ class HelpScoutBeaconPlugin : FlutterPlugin, HelpScoutBeaconApi {
         // Settings
         var configOverrides = BeaconConfigOverrides(
             docsEnabled = settings.docsEnabled,
-            messagingEnabled = settings.messagingEnabled, chatEnabled = settings.chatEnabled,
-            focusMode = focusMode, enablePreviousMessages = settings.enablePreviousMessages
+            messagingEnabled = settings.messagingEnabled,
+            chatEnabled = settings.chatEnabled,
+            focusMode = focusMode,
+            enablePreviousMessages = settings.enablePreviousMessages,
+            contactForm = null as ContactFormConfigApi?
         );
         Beacon.setConfigOverrides(configOverrides);
 
@@ -89,14 +88,19 @@ class HelpScoutBeaconPlugin : FlutterPlugin, HelpScoutBeaconApi {
                 }
             }
 
-            HSBeaconRoute.ARTICLE ->
-                BeaconActivity.open(context, BeaconScreens.ARTICLE_SCREEN, parameters)
+            HSBeaconRoute.ARTICLE -> BeaconActivity.open(context, BeaconScreens.ARTICLE_SCREEN, parameters)
 
-            HSBeaconRoute.CONTACT_FORM ->
-                BeaconActivity.open(context, BeaconScreens.CONTACT_FORM_SCREEN, arrayListOf<String>())
+            HSBeaconRoute.CONTACT_FORM -> BeaconActivity.open(
+                context,
+                BeaconScreens.CONTACT_FORM_SCREEN,
+                arrayListOf<String>()
+            )
 
-            HSBeaconRoute.PREVIOUS_MESSAGES ->
-                BeaconActivity.open(context, BeaconScreens.PREVIOUS_MESSAGES, arrayListOf<String>())
+            HSBeaconRoute.PREVIOUS_MESSAGES -> BeaconActivity.open(
+                context,
+                BeaconScreens.PREVIOUS_MESSAGES,
+                arrayListOf<String>()
+            )
 
             else -> BeaconActivity.open(context, BeaconScreens.DEFAULT, arrayListOf<String>())
         }
@@ -117,12 +121,7 @@ class HelpScoutBeaconPlugin : FlutterPlugin, HelpScoutBeaconApi {
 
         // Create the PreFilledForm object with the prepared data.
         val form = PreFilledForm(
-            "",
-            subject ?: "",
-            message ?: "",
-            emptyMap<Int, String>(),
-            attachmentUris,
-            ""
+            "", subject ?: "", message ?: "", emptyMap<Int, String>(), attachmentUris, ""
         )
         Beacon.addPreFilledForm(form) // Add all data to contact form
     }
