@@ -1,7 +1,8 @@
 # Changelog
 
 ## [0.0.8]
-- update android depdency to beacon:7.0.0
+- Update Android dependency to beacon:7.0.0
+- **BREAKING**: iOS minimum deployment target raised from 11.0 to 15.0
 
 ## [0.0.7]
 - Adding option to prefill a contact form with a subject, message, and the attachments
