@@ -1,5 +1,8 @@
 # Changelog
 
+## [0.0.8]
+- update android depdency to beacon:7.0.0
+
 ## [0.0.7]
 - Adding option to prefill a contact form with a subject, message, and the attachments
 
