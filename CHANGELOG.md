@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.0.9]
+- Added Swift Package Manager support for iOS.
+- Updated Android dependency to beacon:7.0.2.
+
 ## [0.0.8]
 - Update Android dependency to beacon:7.0.0
 - **BREAKING**: iOS minimum deployment target raised from 11.0 to 15.0
