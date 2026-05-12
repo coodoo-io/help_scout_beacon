@@ -1,9 +1,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
   package="de.coodoo.help_scout_beacon">
     <application>
+        <!-- initOrder negative so we run AFTER com.helpscout.beacon.BeaconInitProvider (default 0)
+             which sets up BeaconCoordinator; calling Beacon.Builder().build() requires it. -->
         <provider
             android:name=".BeaconInitProvider"
             android:authorities="${applicationId}.help_scout_beacon.BeaconInitProvider"
-            android:exported="false" />
+            android:exported="false"
+            android:initOrder="-100" />
     </application>
 </manifest>

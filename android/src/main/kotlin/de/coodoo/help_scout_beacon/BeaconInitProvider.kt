@@ -17,10 +17,14 @@ class BeaconInitProvider : ContentProvider() {
     override fun onCreate(): Boolean {
         val ctx = context
         if (ctx != null) {
-            val ai = ctx.packageManager.getApplicationInfo(ctx.packageName, PackageManager.GET_META_DATA)
-            val beaconId = ai.metaData?.getString("com.helpscout.beacon.BeaconId")
-            if (!beaconId.isNullOrEmpty()) {
-                Beacon.Builder().withBeaconId(beaconId).build()
+            try {
+                val ai = ctx.packageManager.getApplicationInfo(ctx.packageName, PackageManager.GET_META_DATA)
+                val beaconId = ai.metaData?.getString("com.helpscout.beacon.BeaconId")
+                if (!beaconId.isNullOrEmpty()) {
+                    Beacon.Builder().withBeaconId(beaconId).build()
+                }
+            } catch (_: Throwable) {
+                //best-effort; don't crash process if SDK internals aren't ready or change shape
             }
         }
         return true

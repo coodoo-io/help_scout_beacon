@@ -1,5 +1,8 @@
 # Changelog
 
+## [0.0.11]
+- Android: BeaconInitProvider — `android:initOrder=-100` so it runs after the SDK's own `com.helpscout.beacon.BeaconInitProvider` (which sets up `BeaconCoordinator`); wrap the build call in try/catch for SDK-internals safety.
+
 ## [0.0.10]
 - Android: BeaconInitProvider pre-builds Beacon at process start from the host app's `com.helpscout.beacon.BeaconId` manifest meta-data, preventing `BeaconActivity` crashing with "Beacon not initialized" after process-death restoration.
 
