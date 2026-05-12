@@ -1,3 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
   package="de.coodoo.help_scout_beacon">
+    <application>
+        <provider
+            android:name=".BeaconInitProvider"
+            android:authorities="${applicationId}.help_scout_beacon.BeaconInitProvider"
+            android:exported="false" />
+    </application>
 </manifest>
