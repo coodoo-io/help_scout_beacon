@@ -1,5 +1,8 @@
 # Changelog
 
+## [0.0.10]
+- Android: BeaconInitProvider pre-builds Beacon at process start from the host app's `com.helpscout.beacon.BeaconId` manifest meta-data, preventing `BeaconActivity` crashing with "Beacon not initialized" after process-death restoration.
+
 ## [0.0.9]
 - Added Swift Package Manager support for iOS.
 - Updated Android dependency to beacon:7.0.2.
