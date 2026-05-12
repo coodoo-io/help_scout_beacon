@@ -65,3 +65,21 @@ beacon.clear()
 
 The newest version on Android requires to setup pro-guard rules.
 See example project [proguard-rules.pro](.example/android/app/proguard-rules.pro)
+
+### Process-death restoration (Android)
+
+The Beacon Android SDK keeps its configuration in a process-static singleton. If Android kills the app process while `BeaconActivity` is in the foreground and later restores it, `BeaconActivity.onCreate` runs before any Dart code can call `Beacon.Builder().build()`, and the activity crashes with *"Beacon not initialized"*.
+
+To handle this, the plugin registers a `BeaconInitProvider` `ContentProvider` (Android instantiates ContentProviders at process start, before any activity). It reads a default beaconId from the host app's `AndroidManifest.xml` and pre-builds Beacon. The runtime `HelpScoutBeacon(...)` call from Dart still overrides this with whatever beaconId you pass, so the manifest value is only used as a fallback during the window before Flutter starts.
+
+Declare the meta-data in your host app's `AndroidManifest.xml`:
+
+```xml
+<application>
+    <meta-data
+        android:name="com.helpscout.beacon.BeaconId"
+        android:value="YOUR_BEACON_ID" />
+</application>
+```
+
+If you omit the meta-data, the plugin still works for normal launches — only the rare process-death restoration path remains unprotected.
