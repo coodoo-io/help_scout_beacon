@@ -1,5 +1,8 @@
 # Changelog
 
+## [0.0.12]
+- iOS: bump `beacon-ios-sdk` SPM constraint from `4.0.0` to `4.1.0` ([releases](https://github.com/helpscout/beacon-ios-sdk/releases)).
+
 ## [0.0.11]
 - Android: BeaconInitProvider — `android:initOrder=-100` so it runs after the SDK's own `com.helpscout.beacon.BeaconInitProvider` (which sets up `BeaconCoordinator`); wrap the build call in try/catch for SDK-internals safety.
 

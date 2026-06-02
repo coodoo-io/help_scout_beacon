@@ -10,7 +10,7 @@ let package = Package(
         .library(name: "help-scout-beacon", targets: ["help_scout_beacon"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/helpscout/beacon-ios-sdk", from: "4.0.0"),
+        .package(url: "https://github.com/helpscout/beacon-ios-sdk", from: "4.1.0"),
     ],
     targets: [
         .target(
