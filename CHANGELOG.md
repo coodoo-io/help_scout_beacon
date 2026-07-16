@@ -3,6 +3,7 @@
 ## [0.1.1]
 - Drop Pigeon's deprecated `dartTestOut`/`dartHostTestHandler` options and the generated test API they produced, so `flutter analyze` is clean again. Regenerate the platform APIs with Pigeon `27.1.2` (no API changes).
 - Android: pin Kotlin's `jvmTarget` to 17 to match `compileOptions`, fixing a JVM-target mismatch build failure on Gradle 9 and recent JDKs.
+- iOS: CocoaPods and Swift Package Manager now build the same sources — the podspec points at the SPM tree, replacing the duplicated `ios/Classes` copy that could drift out of sync.
 - Example: update to Gradle `9.6.1`, AGP `9.3.0` and Kotlin `2.4.10`.
 
 ## [0.1.0]

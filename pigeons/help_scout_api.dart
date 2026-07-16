@@ -5,7 +5,8 @@ import 'package:pigeon/pigeon.dart';
     dartOut: 'lib/help_scout_beacon_api.g.dart',
     kotlinOut:
         'android/src/main/kotlin/de/coodoo/help_scout_beacon/HelpScoutBeaconApi.g.kt',
-    swiftOut: 'ios/Classes/HelpScoutBeaconApi.g.swift',
+    swiftOut:
+        'ios/help_scout_beacon/Sources/help_scout_beacon/HelpScoutBeaconApi.g.swift',
     copyrightHeader: 'pigeons/copyright.txt',
     dartPackageName: 'help_scout_beacon',
   ),

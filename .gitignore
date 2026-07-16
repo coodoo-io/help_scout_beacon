@@ -1,19 +1,10 @@
 # Miscellaneous
-*.class
 *.log
-*.pyc
 *.swp
 .DS_Store
-.atom/
-.buildlog/
-.history
-.svn/
-migrate_working_dir/
 
-# IntelliJ related
+# IntelliJ / Android Studio
 *.iml
-*.ipr
-*.iws
 .idea/
 
 # The .vscode folder contains launch configuration and tasks you configure in
@@ -24,6 +15,40 @@ migrate_working_dir/
 # Flutter/Dart/Pub related
 # Libraries should not include pubspec.lock, per https://dart.dev/guides/libraries/private-files#pubspeclock.
 /pubspec.lock
-**/doc/api/
 .dart_tool/
+.flutter-plugins-dependencies
 build/
+**/doc/api/
+
+# Android related
+.gradle/
+local.properties
+gradle-wrapper.jar
+gradlew
+gradlew.bat
+captures/
+GeneratedPluginRegistrant.java
+**/android/app/debug
+**/android/app/profile
+**/android/app/release
+
+# Remember to never publicly share your keystore.
+# See https://flutter.dev/docs/deployment/android#reference-the-keystore-from-the-app
+key.properties
+**/*.keystore
+**/*.jks
+
+# iOS/Xcode related
+**/DerivedData/
+**/Pods/
+**/.symlinks/
+xcuserdata
+GeneratedPluginRegistrant.h
+GeneratedPluginRegistrant.m
+**/Runner/GeneratedPluginRegistrant.*
+**/Flutter/Generated.xcconfig
+**/Flutter/ephemeral/
+**/Flutter/flutter_export_environment.sh
+
+# Swift Package Manager
+.build/
