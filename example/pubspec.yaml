@@ -14,6 +14,7 @@ dependencies:
   help_scout_beacon:
     path: ../
   path_provider: ^2.1.5
+  cross_file: ^0.3.4+2
 
 dev_dependencies:
   integration_test:

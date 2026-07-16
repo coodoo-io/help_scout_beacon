@@ -1,6 +1,6 @@
 name: help_scout_beacon
 description: "Streamline customer communications in your app with the Help Scout Beacon SDK for Flutter."
-version: 0.0.12
+version: 0.1.0
 repository: https://github.com/coodoo-io/help_scout_beacon
 issue_tracker: https://github.com/coodoo-io/help_scout_beacon/issues
 
@@ -11,19 +11,22 @@ topics:
   - help
 
 environment:
-  sdk: '>=3.0.0 <4.0.0'
+  sdk: '>=3.4.0 <4.0.0'
   flutter: '>=3.0.0'
 
 dependencies:
   flutter:
     sdk: flutter
-  plugin_platform_interface: ^2.1.8
+  flutter_web_plugins:
+    sdk: flutter
+  cross_file: ^0.3.4+2
+  web: ^1.1.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^6.0.0
-  pigeon: ^26.0.2
+  pigeon: ^27.1.0
 
 flutter:
   plugin:
@@ -33,3 +36,6 @@ flutter:
         pluginClass: HelpScoutBeaconPlugin
       ios:
         pluginClass: HelpScoutBeaconPlugin
+      web:
+        pluginClass: HelpScoutBeaconWeb
+        fileName: src/beacon_web_registrant.dart
