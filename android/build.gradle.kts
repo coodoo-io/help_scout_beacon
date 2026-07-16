@@ -16,6 +16,10 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
 
+    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+        compilerOptions.jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
+    }
+
     sourceSets {
         getByName("main") {
             java.srcDirs("src/main/kotlin")

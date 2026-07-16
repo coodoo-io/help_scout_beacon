@@ -3,7 +3,6 @@ import 'package:pigeon/pigeon.dart';
 @ConfigurePigeon(
   PigeonOptions(
     dartOut: 'lib/help_scout_beacon_api.g.dart',
-    dartTestOut: 'test/help_scout_beacon_test.g.dart',
     kotlinOut:
         'android/src/main/kotlin/de/coodoo/help_scout_beacon/HelpScoutBeaconApi.g.kt',
     swiftOut: 'ios/Classes/HelpScoutBeaconApi.g.swift',
@@ -123,7 +122,7 @@ class HSBeaconUser {
 }
 
 /// Help Scout Beacon API
-@HostApi(dartHostTestHandler: 'TestHelpScoutBeaconApi')
+@HostApi()
 abstract class HelpScoutBeaconApi {
   /// Initialize the beacon with a beaconId and optional settings
   void setup({required HSBeaconSettings settings});
