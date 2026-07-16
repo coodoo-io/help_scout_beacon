@@ -245,9 +245,18 @@ enum class HSBeaconFocusMode(val raw: Int) {
 data class HSBeaconSettings (
   /** The Beacon ID to use. */
   val beaconId: String,
-  /** Turn Logging on/off (should be disabled in production) */
+  /**
+   * Turn Logging on/off (should be disabled in production)
+   *
+   * Android only: neither the iOS Beacon SDK nor the JS Beacon exposes a logging switch.
+   */
   val debugLogging: Boolean,
-  /** The title used in the main Beacon interface. This is Support by default. */
+  /**
+   * The title used in the main Beacon interface. This is Support by default.
+   *
+   * Has no effect on any platform — the title is controlled by the Beacon Builder config.
+   * The iOS SDK deprecated its equivalent property for the same reason.
+   */
   val beaconTitle: String? = null,
   /**
    * Disable the Docs integration manually if it’s enabled in the Beacon config.

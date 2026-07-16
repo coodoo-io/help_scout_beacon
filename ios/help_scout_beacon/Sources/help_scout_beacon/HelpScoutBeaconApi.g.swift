@@ -221,8 +221,13 @@ struct HSBeaconSettings: Hashable, CustomStringConvertible {
   /// The Beacon ID to use.
   var beaconId: String
   /// Turn Logging on/off (should be disabled in production)
+  ///
+  /// Android only: neither the iOS Beacon SDK nor the JS Beacon exposes a logging switch.
   var debugLogging: Bool
   /// The title used in the main Beacon interface. This is Support by default.
+  ///
+  /// Has no effect on any platform — the title is controlled by the Beacon Builder config.
+  /// The iOS SDK deprecated its equivalent property for the same reason.
   var beaconTitle: String? = nil
   /// Disable the Docs integration manually if it’s enabled in the Beacon config.
   /// This will not enable Docs if it’s disabled in the config.

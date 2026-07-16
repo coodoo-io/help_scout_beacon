@@ -144,9 +144,14 @@ class HSBeaconSettings {
   String beaconId;
 
   /// Turn Logging on/off (should be disabled in production)
+  ///
+  /// Android only: neither the iOS Beacon SDK nor the JS Beacon exposes a logging switch.
   bool debugLogging;
 
   /// The title used in the main Beacon interface. This is Support by default.
+  ///
+  /// Has no effect on any platform — the title is controlled by the Beacon Builder config.
+  /// The iOS SDK deprecated its equivalent property for the same reason.
   String? beaconTitle;
 
   /// Disable the Docs integration manually if it’s enabled in the Beacon config.

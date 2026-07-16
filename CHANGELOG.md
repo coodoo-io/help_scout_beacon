@@ -3,13 +3,17 @@
 ## [0.2.0]
 
 **iOS**
-- **FIX:** `HSBeaconSettings` overrides are applied again. `beaconTitle`, `docsEnabled`, `messagingEnabled`, `chatEnabled` and `enablePreviousMessages` were silently dropped — a local variable shadowed the parameter, so each override assigned to itself and only `beaconId` and `focusMode` ever reached the SDK.
+- **FIX:** `HSBeaconSettings` overrides are applied again. `docsEnabled`, `messagingEnabled`, `chatEnabled` and `enablePreviousMessages` were silently dropped — a local variable shadowed the parameter, so each override assigned to itself and only `beaconId` and `focusMode` ever reached the SDK. Broken since `0.0.1-dev.2` (2024-02-24), when the overrides were added.
 - **BREAKING:** the plugin builds in Swift 6 language mode and requires Xcode 26 (Swift 6.2 toolchain). Apps uploaded to App Store Connect must be built with Xcode 26 since April 28, 2026, so this only affects builds that are not being submitted.
 - Pre-fill data is now guarded by a lock, fixing a data race between the platform channel writing it and the SDK reading it on the main thread.
 - CocoaPods and Swift Package Manager now build the same sources — the podspec points at the SPM tree, replacing the duplicated `ios/Classes` copy that could drift out of sync.
 
 **Android**
 - Pin Kotlin's `jvmTarget` to 17 to match `compileOptions`, fixing a JVM-target mismatch build failure on Gradle 9 and recent JDKs.
+
+**Docs**
+- `HSBeaconSettings.debugLogging` is documented as Android only: neither the iOS SDK nor the JS Beacon exposes a logging switch.
+- `HSBeaconSettings.beaconTitle` is documented as having no effect on any platform — the title comes from the Beacon Builder config, and the iOS SDK deprecated its equivalent property for the same reason.
 
 **Tooling**
 - Drop Pigeon's deprecated `dartTestOut`/`dartHostTestHandler` options and the generated test API they produced, so `flutter analyze` is clean again. Regenerate the platform APIs with Pigeon `27.1.2` (no API changes).

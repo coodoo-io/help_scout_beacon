@@ -21,7 +21,7 @@ class HelpScoutBeaconPlugin : FlutterPlugin, HelpScoutBeaconApi {
 
     override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
         HelpScoutBeaconApi.setUp(flutterPluginBinding.binaryMessenger, this)
-        context = flutterPluginBinding.applicationContext;
+        context = flutterPluginBinding.applicationContext
     }
 
     //
@@ -44,7 +44,7 @@ class HelpScoutBeaconPlugin : FlutterPlugin, HelpScoutBeaconApi {
         )
 
         beaconUser.attributes?.forEach { (key, value) ->
-            Beacon.addAttributeWithKey(key.toString(), value?.toString() ?: "");
+            Beacon.addAttributeWithKey(key.toString(), value?.toString() ?: "")
         }
     }
 
@@ -53,7 +53,7 @@ class HelpScoutBeaconPlugin : FlutterPlugin, HelpScoutBeaconApi {
      * presented as a modal.
      */
     override fun open(settings: HSBeaconSettings, route: HSBeaconRoute, parameter: String?) {
-        var parameters = arrayListOf<String>()
+        val parameters = arrayListOf<String>()
         if (parameter != null) {
             parameters.add(parameter)
         }
@@ -67,39 +67,40 @@ class HelpScoutBeaconPlugin : FlutterPlugin, HelpScoutBeaconApi {
 
 
         // Settings
-        var configOverrides = BeaconConfigOverrides(
+        val configOverrides = BeaconConfigOverrides(
             docsEnabled = settings.docsEnabled,
             messagingEnabled = settings.messagingEnabled,
             chatEnabled = settings.chatEnabled,
             focusMode = focusMode,
             enablePreviousMessages = settings.enablePreviousMessages,
+            // The cast picks an overload: a bare null is ambiguous here.
             contactForm = null as ContactFormConfig?
-        );
-        Beacon.setConfigOverrides(configOverrides);
+        )
+        Beacon.setConfigOverrides(configOverrides)
 
         // Navigation
         when (route) {
-            HSBeaconRoute.ASK -> BeaconActivity.open(context, BeaconScreens.ASK, arrayListOf<String>())
-            HSBeaconRoute.CHAT -> BeaconActivity.open(context, BeaconScreens.CHAT, arrayListOf<String>())
+            HSBeaconRoute.ASK -> BeaconActivity.open(context, BeaconScreens.ASK, arrayListOf())
+            HSBeaconRoute.CHAT -> BeaconActivity.open(context, BeaconScreens.CHAT, arrayListOf())
             HSBeaconRoute.DOCS -> {
-                if (parameters.isNullOrEmpty()) {
-                    return BeaconActivity.open(context, BeaconScreens.DEFAULT, arrayListOf<String>())
+                if (parameters.isEmpty()) {
+                    BeaconActivity.open(context, BeaconScreens.DEFAULT, arrayListOf())
                 } else {
-                    return BeaconActivity.open(context, BeaconScreens.SEARCH_SCREEN, parameters)
+                    BeaconActivity.open(context, BeaconScreens.SEARCH_SCREEN, parameters)
                 }
             }
 
             HSBeaconRoute.ARTICLE -> BeaconActivity.open(context, BeaconScreens.ARTICLE_SCREEN, parameters)
 
             HSBeaconRoute.CONTACT_FORM -> BeaconActivity.open(
-                context, BeaconScreens.CONTACT_FORM_SCREEN, arrayListOf<String>()
+                context, BeaconScreens.CONTACT_FORM_SCREEN, arrayListOf()
             )
 
             HSBeaconRoute.PREVIOUS_MESSAGES -> BeaconActivity.open(
-                context, BeaconScreens.PREVIOUS_MESSAGES, arrayListOf<String>()
+                context, BeaconScreens.PREVIOUS_MESSAGES, arrayListOf()
             )
 
-            else -> BeaconActivity.open(context, BeaconScreens.DEFAULT, arrayListOf<String>())
+            else -> BeaconActivity.open(context, BeaconScreens.DEFAULT, arrayListOf())
         }
     }
 

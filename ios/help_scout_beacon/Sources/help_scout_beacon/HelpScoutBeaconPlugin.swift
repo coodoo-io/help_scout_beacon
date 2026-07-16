@@ -40,9 +40,8 @@ public final class HelpScoutBeaconPlugin: NSObject, FlutterPlugin, HelpScoutBeac
     let beaconSettings = Beacon.HSBeaconSettings(beaconId: settings.beaconId)
 
     // Only override what Flutter actually set; the rest stays on the Beacon Builder config.
-    if let beaconTitle = settings.beaconTitle {
-      beaconSettings.beaconTitle = beaconTitle
-    }
+    // `beaconTitle` is deliberately not forwarded: the SDK deprecated it and it has no effect —
+    // the title comes from the Beacon Builder config.
     if let docsEnabled = settings.docsEnabled {
       beaconSettings.docsEnabled = docsEnabled
     }
