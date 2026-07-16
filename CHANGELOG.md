@@ -1,9 +1,18 @@
 # Changelog
 
-## [0.1.1]
+## [0.2.0]
+
+**iOS**
+- **FIX:** `HSBeaconSettings` overrides are applied again. `beaconTitle`, `docsEnabled`, `messagingEnabled`, `chatEnabled` and `enablePreviousMessages` were silently dropped — a local variable shadowed the parameter, so each override assigned to itself and only `beaconId` and `focusMode` ever reached the SDK.
+- **BREAKING:** the plugin builds in Swift 6 language mode and requires Xcode 26 (Swift 6.2 toolchain). Apps uploaded to App Store Connect must be built with Xcode 26 since April 28, 2026, so this only affects builds that are not being submitted.
+- Pre-fill data is now guarded by a lock, fixing a data race between the platform channel writing it and the SDK reading it on the main thread.
+- CocoaPods and Swift Package Manager now build the same sources — the podspec points at the SPM tree, replacing the duplicated `ios/Classes` copy that could drift out of sync.
+
+**Android**
+- Pin Kotlin's `jvmTarget` to 17 to match `compileOptions`, fixing a JVM-target mismatch build failure on Gradle 9 and recent JDKs.
+
+**Tooling**
 - Drop Pigeon's deprecated `dartTestOut`/`dartHostTestHandler` options and the generated test API they produced, so `flutter analyze` is clean again. Regenerate the platform APIs with Pigeon `27.1.2` (no API changes).
-- Android: pin Kotlin's `jvmTarget` to 17 to match `compileOptions`, fixing a JVM-target mismatch build failure on Gradle 9 and recent JDKs.
-- iOS: CocoaPods and Swift Package Manager now build the same sources — the podspec points at the SPM tree, replacing the duplicated `ios/Classes` copy that could drift out of sync.
 - Example: update to Gradle `9.6.1`, AGP `9.3.0` and Kotlin `2.4.10`.
 
 ## [0.1.0]
