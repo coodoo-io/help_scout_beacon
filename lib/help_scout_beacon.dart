@@ -1,51 +1,60 @@
-import 'package:help_scout_beacon/help_scout_beacon_api.g.dart';
-import 'dart:io';
+import 'package:cross_file/cross_file.dart';
 
-/// Flutter plugin to talk to the Help Scout iOS/Android Beacon SDK
+import 'package:help_scout_beacon/help_scout_beacon_api.g.dart';
+import 'package:help_scout_beacon/src/beacon_platform.dart';
+
+export 'package:help_scout_beacon/help_scout_beacon_api.g.dart'
+    show
+        HSBeaconSettings,
+        HSBeaconUser,
+        HSBeaconRoute,
+        HSBeaconFocusMode;
+
+/// Flutter plugin to talk to the Help Scout Beacon SDK.
+///
+/// * iOS / Android use the native Beacon SDK (via Pigeon).
+/// * Web uses the Help Scout Beacon JS SDK (via JS interop).
 class HelpScoutBeacon {
-  HelpScoutBeacon(this.settings) : api = HelpScoutBeaconApi() {
+  HelpScoutBeacon(this.settings) : _platform = BeaconPlatform() {
     _setup();
   }
 
   final HSBeaconSettings settings;
-  final HelpScoutBeaconApi api;
+  final BeaconPlatform _platform;
 
-  /// Initialize the beacon with a beaconId and optional settings (only used in Android)
-  Future<void> _setup() async {
-    await api.setup(settings: settings);
-  }
+  /// Initialize the beacon with a beaconId and optional settings.
+  Future<void> _setup() async => _platform.setup(settings);
 
-  /// Signs in with a Beacon user. This gives Beacon access to the user’s name, email address, and signature.
-  Future<void> identify({required HSBeaconUser beaconUser}) async {
-    await api.identify(beaconUser: beaconUser);
-  }
+  /// Signs in with a Beacon user. This gives Beacon access to the user’s name,
+  /// email address, and signature.
+  Future<void> identify({required HSBeaconUser beaconUser}) async =>
+      _platform.identify(beaconUser);
 
-  /// Opens the Beacon SDK from a specific view controller. The Beacon view controller will be presented as a modal.
+  /// Opens the Beacon UI at a specific [route].
   Future<void> open({
     HSBeaconRoute route = HSBeaconRoute.ask,
     String? parameter,
-  }) async {
-    await api.open(settings: settings, route: route, parameter: parameter);
-  }
+  }) async =>
+      _platform.open(settings, route, parameter);
 
-  /// Logs the current Beacon user out and clears out their information from local storage.
-  Future<void> clear() async {
-    await api.clear();
-  }
-  //Prefill contact form with subject, message and attachments.
+  /// Logs the current Beacon user out and clears their local information.
+  Future<void> clear() async => _platform.clear();
+
+  /// Logs the current Beacon user out without needing a configured instance.
+  ///
+  /// Handy on logout, where no [HSBeaconSettings] (and hence no beaconId) is
+  /// available. On web this maps to `Beacon('logout')`, which needs no id;
+  /// on iOS/Android it clears the native user.
+  static Future<void> logout() async => BeaconPlatform().clear();
+
+  /// Prefill the contact form with subject, message and attachments.
+  ///
+  /// NOTE: [attachments] are only applied on iOS/Android. The web Beacon
+  /// `prefill` API supports form fields but not file attachments.
   Future<void> prefillContactForm({
     String? subject,
     String? message,
-    List<File>? attachments,
-  }) async {
-    final attachmentUris = attachments?.map((attachment) {
-      if (Platform.isIOS) { // To solve plateform specific path related problem of files
-        return attachment.path;  
-      } else {
-        return attachment.uri.toString();
-      }
-    }).toList();
-
-    await api.prefillContactForm(subject, message, attachmentUris);
-  }
+    List<XFile>? attachments,
+  }) async =>
+      _platform.prefillContactForm(subject, message, attachments);
 }

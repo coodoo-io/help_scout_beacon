@@ -2,6 +2,8 @@
 
 Streamline customer communications in your app with the Help Scout Beacon SDK for Flutter.
 
+Supported platforms: **iOS**, **Android**, and **Web**. iOS/Android use the native Beacon SDK; web uses the [Help Scout JS Beacon](https://developer.helpscout.com/beacon-2/web/javascript-api/) (the loader is injected automatically — no `index.html` changes required).
+
 
 [See Demo](./example/lib/main.dart)
 *Add your BeaconId in `main.dart`*
@@ -40,28 +42,61 @@ beacon.open(route: HSBeaconRoute.contactForm);
 beacon.open(route: HSBeaconRoute.previousMessages);
 beacon.open(route: HSBeaconRoute.docs);
 beacon.open(route: HSBeaconRoute.docs, parameter: 'search term');
-beacon.open(route: HSBeaconRoute.article, paramter: 'article id');
+beacon.open(route: HSBeaconRoute.article, parameter: 'article id');
 ```
 
-Open a prefilled Contact Form page with a subject, message, and the attachments in the Help Scout beacon UI:
+Open a prefilled Contact Form page with a subject, message, and attachments in the Help Scout beacon UI. Attachments are `XFile`s (from [`package:cross_file`](https://pub.dev/packages/cross_file)):
 
 ```dart
 await beacon.prefillContactForm(
   subject: 'Help Scout',
   message: 'This is sample prefilled message',
-  attachments: [file]);
+  attachments: [XFile(file.path)]);
 beacon.open(route: HSBeaconRoute.contactForm);
 ```
+
+> **Web note:** attachments are only supported on iOS/Android — the web Beacon `prefill` API ignores them.
 
 ### Cleanup / Logout
 
 Once done you can remove all data:
 
 ```dart
-beacon.clear()
+beacon.clear();
 ```
+
+If you need to log out where you don't have a configured `HelpScoutBeacon` instance (e.g. no beaconId at hand), use the static, context-free logout:
+
+```dart
+HelpScoutBeacon.logout();
+```
+
+### Web
+
+Web uses the Help Scout JS Beacon and the plugin injects its loader on `setup()`, so no `web/index.html` changes are needed. A few behaviours differ from native:
+
+- Only `beaconId` from `HSBeaconSettings` is applied. Native-only toggles (`docsEnabled`, `chatEnabled`, `messagingEnabled`, `beaconTitle`, `focusMode`, …) have no JS equivalent — configure those in the Help Scout **Beacon Builder**, and use `open(route: …)` to route directly to a screen.
+- `prefillContactForm` attachments are ignored (see the note above).
 
 ### Release mode
 
 The newest version on Android requires to setup pro-guard rules.
 See example project [proguard-rules.pro](.example/android/app/proguard-rules.pro)
+
+### Process-death restoration (Android)
+
+The Beacon Android SDK keeps its configuration in a process-static singleton. If Android kills the app process while `BeaconActivity` is in the foreground and later restores it, `BeaconActivity.onCreate` runs before any Dart code can call `Beacon.Builder().build()`, and the activity crashes with *"Beacon not initialized"*.
+
+To handle this, the plugin registers a `BeaconInitProvider` `ContentProvider` (Android instantiates ContentProviders at process start, before any activity). It reads a default beaconId from the host app's `AndroidManifest.xml` and pre-builds Beacon. The runtime `HelpScoutBeacon(...)` call from Dart still overrides this with whatever beaconId you pass, so the manifest value is only used as a fallback during the window before Flutter starts.
+
+Declare the meta-data in your host app's `AndroidManifest.xml`:
+
+```xml
+<application>
+    <meta-data
+        android:name="com.helpscout.beacon.BeaconId"
+        android:value="YOUR_BEACON_ID" />
+</application>
+```
+
+If you omit the meta-data, the plugin still works for normal launches — only the rare process-death restoration path remains unprotected.
