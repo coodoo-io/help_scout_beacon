@@ -44,7 +44,7 @@ class HelpScoutBeaconPlugin : FlutterPlugin, HelpScoutBeaconApi {
         )
 
         beaconUser.attributes?.forEach { (key, value) ->
-            Beacon.addAttributeWithKey(key.toString(), value?.toString() ?: "")
+            Beacon.addAttributeWithKey(key, value)
         }
     }
 
@@ -115,6 +115,10 @@ class HelpScoutBeaconPlugin : FlutterPlugin, HelpScoutBeaconApi {
     }
 
     override fun prefillContactForm(subject: String?, message: String?, attachments: List<String>?) {
+        // Prefilled forms are ignored while a draft exists, so drop any stale
+        // draft first — otherwise this call silently does nothing.
+        Beacon.contactFormReset()
+
         val attachmentUris = attachments?.map { Uri.parse(it).toString() } ?: emptyList()
 
         // Create the PreFilledForm object with the prepared data.

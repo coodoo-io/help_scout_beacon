@@ -25,11 +25,7 @@ public final class HelpScoutBeaconPlugin: NSObject, FlutterPlugin, HelpScoutBeac
     user.avatar = beaconUser.avatar.flatMap { URL(string: $0) }
 
     for (key, value) in beaconUser.attributes ?? [:] {
-      guard let key else { continue }
-      user.addAttribute(
-        withKey: String(describing: key),
-        value: value.map { String(describing: $0) } ?? ""
-      )
+      user.addAttribute(withKey: key, value: value)
     }
 
     Beacon.HSBeacon.identify(user)
@@ -95,6 +91,10 @@ public final class HelpScoutBeaconPlugin: NSObject, FlutterPlugin, HelpScoutBeac
   /// Receives pre-fill data from Flutter and stores it in the singleton delegate.
   /// This data will be used later when the `prefill` delegate method is called by the SDK.
   func prefillContactForm(subject: String?, message: String?, attachments: [String]?) {
+    // Prefilled forms are ignored while a draft exists, so drop any stale draft
+    // first — otherwise this call silently does nothing.
+    Beacon.HSBeacon.reset()
+
     BeaconPrefillDelegate.shared.update(
       subject: subject,
       message: message,
@@ -125,12 +125,20 @@ final class BeaconPrefillDelegate: NSObject, HSBeaconDelegate, @unchecked Sendab
   }
 
   /// This delegate method is called by the Beacon SDK just before the contact form is displayed.
+  ///
+  /// The stored data is consumed here: a prefill applies to the next contact form only,
+  /// so later forms opened without a `prefillContactForm` call start empty.
   func prefill(_ form: HSBeaconContactForm) {
     lock.lock()
     let subject = self.subject
     let message = self.message
     let attachments = self.attachments
+    self.subject = nil
+    self.message = nil
+    self.attachments = nil
     lock.unlock()
+
+    guard subject != nil || message != nil || attachments != nil else { return }
 
     form.subject = subject ?? ""
     form.text = message ?? ""

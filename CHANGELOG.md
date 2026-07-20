@@ -2,6 +2,15 @@
 
 ## [0.2.0]
 
+**All platforms**
+- **FIX:** `HelpScoutBeacon.logout()` no longer throws on web when the beacon was never opened. The JS loader is now injected by every method, not just `setup`/`open`, so calling `logout` (or `identify`/`prefillContactForm`) first no longer hits an undefined `window.Beacon`.
+- **FIX:** `prefillContactForm` resets the contact form first. Both native SDKs ignore a prefill while a draft message exists, so a stale draft silently discarded the prefilled values.
+- **BREAKING:** `HSBeaconUser.attributes` is now `Map<String, String>?` instead of an untyped `Map?`, matching what both native SDKs accept. Non-string values were being stringified implicitly; convert them at the call site.
+- `setup` runs once per configuration on iOS/Android too. Constructing a `HelpScoutBeacon` per open previously re-ran native setup every time, which rebuilt the Beacon from scratch on Android. Web already behaved this way.
+- Add `HelpScoutBeacon.ready`, which completes when setup finishes. Every method awaits it internally, so a failing setup now surfaces on the call you made instead of as an unhandled async error.
+- Prefill data applies to the next contact form only; previously it persisted for the process lifetime and leaked into later forms.
+- Web: user attributes that collide with a built-in `identify` field (`email`, `name`, …) are dropped instead of overwriting it, and `open(route: article)` without an id falls back to the docs list rather than reopening the last screen.
+
 **iOS**
 - **FIX:** `HSBeaconSettings` overrides are applied again. `docsEnabled`, `messagingEnabled`, `chatEnabled` and `enablePreviousMessages` were silently dropped — a local variable shadowed the parameter, so each override assigned to itself and only `beaconId` and `focusMode` ever reached the SDK. Broken since `0.0.1-dev.2` (2024-02-24), when the overrides were added.
 - **BREAKING:** the plugin builds in Swift 6 language mode and requires Xcode 26 (Swift 6.2 toolchain). Apps uploaded to App Store Connect must be built with Xcode 26 since April 28, 2026, so this only affects builds that are not being submitted.

@@ -124,7 +124,7 @@ class HSBeaconUser {
   final String? avatar;
 
   /// The attributes for the current user. These are arbitrary key/value pairs that will be sent to Help Scout to help identify the current user. You may add up to 30 different attributes.
-  final Map? attributes;
+  final Map<String, String>? attributes;
 }
 
 /// Help Scout Beacon API
