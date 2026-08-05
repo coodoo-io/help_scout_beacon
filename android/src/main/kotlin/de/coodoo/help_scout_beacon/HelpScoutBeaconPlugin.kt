@@ -99,8 +99,6 @@ class HelpScoutBeaconPlugin : FlutterPlugin, HelpScoutBeaconApi {
             HSBeaconRoute.PREVIOUS_MESSAGES -> BeaconActivity.open(
                 context, BeaconScreens.PREVIOUS_MESSAGES, arrayListOf()
             )
-
-            else -> BeaconActivity.open(context, BeaconScreens.DEFAULT, arrayListOf())
         }
     }
 
