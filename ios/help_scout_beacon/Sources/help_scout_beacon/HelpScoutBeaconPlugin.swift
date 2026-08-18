@@ -1,132 +1,155 @@
+import Beacon
 import Flutter
 import UIKit
-import Beacon
 
-public class HelpScoutBeaconPlugin: NSObject, FlutterPlugin, HelpScoutBeaconApi {
+public final class HelpScoutBeaconPlugin: NSObject, FlutterPlugin, HelpScoutBeaconApi {
   public static func register(with registrar: FlutterPluginRegistrar) {
-    let messenger : FlutterBinaryMessenger = registrar.messenger()
-    let api : HelpScoutBeaconApi & NSObjectProtocol = HelpScoutBeaconPlugin.init()
-    HelpScoutBeaconApiSetup.setUp(binaryMessenger: messenger, api: api)
+    HelpScoutBeaconApiSetup.setUp(
+      binaryMessenger: registrar.messenger(),
+      api: HelpScoutBeaconPlugin()
+    )
   }
 
-  func setup(settings: HSBeaconSettings) -> Void {
-    // No needed for the swift API
+  /// Initialize the beacon with a beaconId and optional settings.
+  func setup(settings: HSBeaconSettings) {
+    // Nothing to do here: the iOS SDK takes its settings when a screen is opened, see `open`.
   }
 
   /// Signs in with a Beacon user. This gives Beacon access to the user’s name, email address, and signature.
-  func identify(beaconUser: HSBeaconUser) -> Void {
+  func identify(beaconUser: HSBeaconUser) {
     let user = Beacon.HSBeaconUser()
     user.email = beaconUser.email
     user.name = beaconUser.name
     user.company = beaconUser.company
     user.jobTitle = beaconUser.jobTitle
-    user.avatar = beaconUser.avatar != nil ? URL(string: beaconUser.avatar!) : nil
+    user.avatar = beaconUser.avatar.flatMap { URL(string: $0) }
 
-    if let attributes = beaconUser.attributes {
-        for (key, value) in attributes {
-            guard let unwrappedKey = key else { continue }
-            let stringKey = String(describing: unwrappedKey)
-            let stringValue = value != nil ? String(describing: value!) : ""
-            user.addAttribute(withKey: stringKey, value: stringValue)
-        }
+    for (key, value) in beaconUser.attributes ?? [:] {
+      user.addAttribute(withKey: key, value: value)
     }
 
     Beacon.HSBeacon.identify(user)
   }
 
   /// Opens the Beacon SDK from a specific view controller. The Beacon view controller will be presented as a modal.
-  func open(settings: HSBeaconSettings, route: HSBeaconRoute, parameter: String?) -> Void {
-    var fMode : Beacon.HSBeaconFocusMode? = switch settings.focusMode {
-        case .neutral:
-          Beacon.HSBeaconFocusMode.neutral
-        case .selfService:
-          Beacon.HSBeaconFocusMode.selfService
-        case .askFirst:
-          Beacon.HSBeaconFocusMode.askFirst
-        default:
-          nil
-      }
+  func open(settings: HSBeaconSettings, route: HSBeaconRoute, parameter: String?) {
+    let beaconSettings = Beacon.HSBeaconSettings(beaconId: settings.beaconId)
 
-    let settings = Beacon.HSBeaconSettings(beaconId: settings.beaconId)
-    settings.beaconTitle = settings.beaconTitle;
-    settings.docsEnabled = settings.docsEnabled;
-    settings.messagingEnabled = settings.messagingEnabled;
-    settings.chatEnabled = settings.chatEnabled;
-    settings.enablePreviousMessages = settings.enablePreviousMessages;
-    if(fMode != nil) {
-      settings.focusModeOverride = fMode!;
+    // Only override what Flutter actually set; the rest stays on the Beacon Builder config.
+    // `beaconTitle` is deliberately not forwarded: the SDK deprecated it and it has no effect —
+    // the title comes from the Beacon Builder config.
+    if let docsEnabled = settings.docsEnabled {
+      beaconSettings.docsEnabled = docsEnabled
+    }
+    if let messagingEnabled = settings.messagingEnabled {
+      beaconSettings.messagingEnabled = messagingEnabled
+    }
+    if let chatEnabled = settings.chatEnabled {
+      beaconSettings.chatEnabled = chatEnabled
+    }
+    beaconSettings.enablePreviousMessages = settings.enablePreviousMessages
+
+    if let focusMode = settings.focusMode {
+      switch focusMode {
+      case .neutral:
+        beaconSettings.focusModeOverride = .neutral
+      case .selfService:
+        beaconSettings.focusModeOverride = .selfService
+      case .askFirst:
+        beaconSettings.focusModeOverride = .askFirst
+      }
     }
 
-    // method to be called when the user navigates to the contact form.
-    settings.delegate = BeaconPrefillDelegate.shared
+    // Called back when the user navigates to the contact form.
+    beaconSettings.delegate = BeaconPrefillDelegate.shared
 
     switch route {
-      case .ask:
-        Beacon.HSBeacon.navigate(BeaconRoute.ask, settings: settings) // ask screen
-      case .chat:
-        Beacon.HSBeacon.navigate(BeaconRoute.askChat, settings: settings) // chat
-      case .docs:
-        if(parameter==nil || parameter == "") {
-          Beacon.HSBeacon.navigate(BeaconRoute.answers,settings: settings) // Open docs
-        } else {
-          Beacon.HSBeacon.navigate(BeaconRoute.search(parameter!), settings: settings) // Open docs with search query
-        }
-      case .article:
-        Beacon.HSBeacon.navigate(BeaconRoute.article(parameter ?? ""), settings: settings) // Open an article
-      case .contactForm:
-        Beacon.HSBeacon.navigate(BeaconRoute.askMessage, settings: settings) // contact-form screen
-      case .previousMessages:
-        Beacon.HSBeacon.navigate(BeaconRoute.previousMessages, settings: settings) // previous conversations screen
-      default:
-        Beacon.HSBeacon.open(settings)
+    case .ask:
+      Beacon.HSBeacon.navigate(BeaconRoute.ask, settings: beaconSettings)
+    case .chat:
+      Beacon.HSBeacon.navigate(BeaconRoute.askChat, settings: beaconSettings)
+    case .docs:
+      if let parameter, !parameter.isEmpty {
+        Beacon.HSBeacon.navigate(BeaconRoute.search(parameter), settings: beaconSettings)
+      } else {
+        Beacon.HSBeacon.navigate(BeaconRoute.answers, settings: beaconSettings)
       }
+    case .article:
+      Beacon.HSBeacon.navigate(BeaconRoute.article(parameter ?? ""), settings: beaconSettings)
+    case .contactForm:
+      Beacon.HSBeacon.navigate(BeaconRoute.askMessage, settings: beaconSettings)
+    case .previousMessages:
+      Beacon.HSBeacon.navigate(BeaconRoute.previousMessages, settings: beaconSettings)
+    }
   }
 
   /// Logs the current Beacon user out and clears out their information from local storage.
-  func clear() -> Void {
+  func clear() {
     Beacon.HSBeacon.logout()
   }
 
   /// Receives pre-fill data from Flutter and stores it in the singleton delegate.
   /// This data will be used later when the `prefill` delegate method is called by the SDK.
   func prefillContactForm(subject: String?, message: String?, attachments: [String]?) {
-      let delegate = BeaconPrefillDelegate.shared
-      delegate.subject = subject
-      delegate.message = message
-      delegate.attachments = attachments
+    // Prefilled forms are ignored while a draft exists, so drop any stale draft
+    // first — otherwise this call silently does nothing.
+    Beacon.HSBeacon.reset()
+
+    BeaconPrefillDelegate.shared.update(
+      subject: subject,
+      message: message,
+      attachments: attachments
+    )
   }
 }
 
-// A singleton delegate class to handle pre-filling the Help Scout Beacon contact form.
-class BeaconPrefillDelegate: NSObject, HSBeaconDelegate {
+/// A singleton delegate class to handle pre-filling the Help Scout Beacon contact form.
+///
+/// `update` is called from the platform channel and `prefill` by the SDK when the form is about
+/// to be shown, so the stored data is lock-protected rather than isolated to an actor: both
+/// `FlutterPlugin` and `HSBeaconDelegate` are non-isolated protocols from other modules.
+final class BeaconPrefillDelegate: NSObject, HSBeaconDelegate, @unchecked Sendable {
+  static let shared = BeaconPrefillDelegate()
 
-    static let shared = BeaconPrefillDelegate()
-    var subject: String?
-    var message: String?
-    var attachments: [String]?
+  private let lock = NSLock()
+  private var subject: String?
+  private var message: String?
+  private var attachments: [String]?
 
-    // This delegate method is called by the Beacon SDK just before the contact form is displayed.
-    func prefill(_ form: HSBeaconContactForm) {
-        form.subject = self.subject ?? ""
-        form.text = self.message ?? ""
+  func update(subject: String?, message: String?, attachments: [String]?) {
+    lock.lock()
+    defer { lock.unlock() }
+    self.subject = subject
+    self.message = message
+    self.attachments = attachments
+  }
 
-        guard let attachmentPaths = self.attachments, !attachmentPaths.isEmpty else {
-            return
-        }
+  /// This delegate method is called by the Beacon SDK just before the contact form is displayed.
+  ///
+  /// The stored data is consumed here: a prefill applies to the next contact form only,
+  /// so later forms opened without a `prefillContactForm` call start empty.
+  func prefill(_ form: HSBeaconContactForm) {
+    lock.lock()
+    let subject = self.subject
+    let message = self.message
+    let attachments = self.attachments
+    self.subject = nil
+    self.message = nil
+    self.attachments = nil
+    lock.unlock()
 
-        // Iterate over each file path and create a data attachment.
-        attachmentPaths.forEach { path in
-            let fileUrl = URL(fileURLWithPath: path)
-            let filename = fileUrl.lastPathComponent
+    guard subject != nil || message != nil || attachments != nil else { return }
 
-            do {
-                if FileManager.default.fileExists(atPath: path) {
-                    let fileData = try Data(contentsOf: fileUrl)
-                    form.addAttachment(filename, data: fileData)
-                }
-            } catch {
-                // Silently fail if the file cannot be read, to avoid crashing the app.
-            }
-        }
+    form.subject = subject ?? ""
+    form.text = message ?? ""
+
+    for path in attachments ?? [] {
+      let fileUrl = URL(fileURLWithPath: path)
+      // Silently skip files that cannot be read, to avoid crashing the app.
+      guard FileManager.default.fileExists(atPath: path),
+        let fileData = try? Data(contentsOf: fileUrl)
+      else { continue }
+      form.addAttachment(fileUrl.lastPathComponent, data: fileData)
     }
+  }
 }

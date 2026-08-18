@@ -3,10 +3,10 @@ import 'package:pigeon/pigeon.dart';
 @ConfigurePigeon(
   PigeonOptions(
     dartOut: 'lib/help_scout_beacon_api.g.dart',
-    dartTestOut: 'test/help_scout_beacon_test.g.dart',
     kotlinOut:
         'android/src/main/kotlin/de/coodoo/help_scout_beacon/HelpScoutBeaconApi.g.kt',
-    swiftOut: 'ios/Classes/HelpScoutBeaconApi.g.swift',
+    swiftOut:
+        'ios/help_scout_beacon/Sources/help_scout_beacon/HelpScoutBeaconApi.g.swift',
     copyrightHeader: 'pigeons/copyright.txt',
     dartPackageName: 'help_scout_beacon',
   ),
@@ -31,9 +31,14 @@ class HSBeaconSettings {
   final String beaconId;
 
   /// Turn Logging on/off (should be disabled in production)
+  ///
+  /// Android only: neither the iOS Beacon SDK nor the JS Beacon exposes a logging switch.
   final bool debugLogging;
 
   /// The title used in the main Beacon interface. This is Support by default.
+  ///
+  /// Has no effect on any platform — the title is controlled by the Beacon Builder config.
+  /// The iOS SDK deprecated its equivalent property for the same reason.
   final String? beaconTitle;
 
   /// Disable the Docs integration manually if it’s enabled in the Beacon config.
@@ -119,11 +124,11 @@ class HSBeaconUser {
   final String? avatar;
 
   /// The attributes for the current user. These are arbitrary key/value pairs that will be sent to Help Scout to help identify the current user. You may add up to 30 different attributes.
-  final Map? attributes;
+  final Map<String, String>? attributes;
 }
 
 /// Help Scout Beacon API
-@HostApi(dartHostTestHandler: 'TestHelpScoutBeaconApi')
+@HostApi()
 abstract class HelpScoutBeaconApi {
   /// Initialize the beacon with a beaconId and optional settings
   void setup({required HSBeaconSettings settings});

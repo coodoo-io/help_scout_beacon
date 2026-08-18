@@ -4,6 +4,8 @@ Streamline customer communications in your app with the Help Scout Beacon SDK fo
 
 Supported platforms: **iOS**, **Android**, and **Web**. iOS/Android use the native Beacon SDK; web uses the [Help Scout JS Beacon](https://developer.helpscout.com/beacon-2/web/javascript-api/) (the loader is injected automatically — no `index.html` changes required).
 
+Building for iOS requires **Xcode 26** — the plugin builds in Swift 6 language mode.
+
 
 [See Demo](./example/lib/main.dart)
 *Add your BeaconId in `main.dart`*

@@ -20,14 +20,26 @@ external void _beacon(String method, [JSAny? options]);
 /// warns "Beacon has already been initialized").
 String? _initializedBeaconId;
 
+/// Whether the loader snippet has been injected. Library-level for the same
+/// reason as [_initializedBeaconId]: a fresh platform instance per call would
+/// never see a previous injection.
+bool _loaderInjected = false;
+
+/// Keys the JS Beacon `identify` payload defines itself; a user attribute using
+/// one of these would silently overwrite the real field.
+const _reservedIdentifyKeys = {'email', 'name', 'company', 'jobTitle', 'avatar', 'signature'};
+
 /// Web implementation backed by the Help Scout Beacon JS SDK.
 ///
 /// Docs: https://developer.helpscout.com/beacon-2/web/javascript-api/
 class BeaconPlatformWeb implements BeaconPlatform {
-  bool _loaderInjected = false;
-
   /// Injects the official Beacon async loader snippet once. After this runs,
   /// `window.Beacon(...)` calls are queued until beacon-v2.js finishes loading.
+  ///
+  /// Every method calls this before touching `window.Beacon`: without it, a
+  /// call that does not go through [setup] first (notably
+  /// `HelpScoutBeacon.logout()` on a page that never opened the beacon) would
+  /// invoke an undefined `window.Beacon` and throw.
   void _ensureLoader() {
     if (_loaderInjected || globalContext.has('Beacon')) {
       _loaderInjected = true;
@@ -65,13 +77,19 @@ class BeaconPlatformWeb implements BeaconPlatform {
 
   @override
   Future<void> identify(HSBeaconUser beaconUser) async {
+    _ensureLoader();
+    // Custom attributes go alongside the built-in fields, so drop any that
+    // would clobber one rather than silently replacing it. Copy first — the
+    // map belongs to the caller.
+    final attributes = {...?beaconUser.attributes}
+      ..removeWhere((key, _) => _reservedIdentifyKeys.contains(key));
     final data = <String, Object?>{
       'email': beaconUser.email,
       if (beaconUser.name != null) 'name': beaconUser.name,
       if (beaconUser.company != null) 'company': beaconUser.company,
       if (beaconUser.jobTitle != null) 'jobTitle': beaconUser.jobTitle,
       if (beaconUser.avatar != null) 'avatar': beaconUser.avatar,
-      ...?beaconUser.attributes?.map((k, v) => MapEntry(k.toString(), v)),
+      ...attributes,
     };
     _beacon('identify', data.jsify());
   }
@@ -91,7 +109,13 @@ class BeaconPlatformWeb implements BeaconPlatform {
           _beacon('navigate', '/answers/'.toJS);
         }
       case HSBeaconRoute.article:
-        if (parameter != null) _beacon('article', parameter.toJS);
+        // Without an article id there is nothing to show; fall back to the docs
+        // list rather than opening whatever screen happened to be last.
+        if (parameter != null && parameter.isNotEmpty) {
+          _beacon('article', parameter.toJS);
+        } else {
+          _beacon('navigate', '/answers/'.toJS);
+        }
       case HSBeaconRoute.contactForm:
         _beacon('navigate', '/ask/message/'.toJS);
       case HSBeaconRoute.previousMessages:
@@ -101,10 +125,14 @@ class BeaconPlatformWeb implements BeaconPlatform {
   }
 
   @override
-  Future<void> clear() async => _beacon('logout');
+  Future<void> clear() async {
+    _ensureLoader();
+    _beacon('logout');
+  }
 
   @override
   Future<void> prefillContactForm(String? subject, String? message, List<XFile>? attachments) async {
+    _ensureLoader();
     // Web Beacon prefill supports form fields only — attachments are ignored.
     final data = <String, Object?>{
       if (subject != null) 'subject': subject,

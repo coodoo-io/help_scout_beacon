@@ -47,3 +47,12 @@ android {
         }
     }
 }
+
+// Keep Kotlin's target in step with compileOptions above; otherwise Kotlin defaults to the
+// JDK's own version and Gradle 9 fails the build on the mismatch. Works under both KGP
+// (AGP 8) and built-in Kotlin (AGP 9).
+project.extensions.configure(org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension::class.java) {
+    compilerOptions {
+        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17
+    }
+}

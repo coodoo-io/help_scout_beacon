@@ -7,12 +7,25 @@ import 'package:help_scout_beacon/src/beacon_platform.dart';
 
 BeaconPlatform createBeaconPlatform() => BeaconPlatformNative();
 
+/// The configuration the native SDK was last set up with, or null if never.
+/// Library-level (not instance) state: [HelpScoutBeacon] builds a fresh platform
+/// instance per call, so instance state would re-run `setup` on every open —
+/// which on Android rebuilds the whole Beacon.
+String? _initializedWith;
+
 /// iOS / Android implementation backed by the native Beacon SDK via Pigeon.
 class BeaconPlatformNative implements BeaconPlatform {
   final HelpScoutBeaconApi _api = HelpScoutBeaconApi();
 
   @override
-  Future<void> setup(HSBeaconSettings settings) => _api.setup(settings: settings);
+  Future<void> setup(HSBeaconSettings settings) async {
+    // Only `beaconId` and `debugLogging` are consumed by the native `setup`;
+    // the remaining settings are passed again on every `open`.
+    final key = '${settings.beaconId}:${settings.debugLogging}';
+    if (_initializedWith == key) return;
+    await _api.setup(settings: settings);
+    _initializedWith = key;
+  }
 
   @override
   Future<void> identify(HSBeaconUser beaconUser) => _api.identify(beaconUser: beaconUser);
